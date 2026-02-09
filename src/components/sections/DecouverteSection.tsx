@@ -54,7 +54,7 @@ const VERSES: Verse[] = [
   {
     accent: 'title',
     lines: [
-      { text: 'Quand tu es là...', style: 'serif' },
+      { text: 'Eve, quand tu es là...', style: 'serif' },
       { text: 'mon visage sourit sans y penser.', style: 'serif' },
       { text: 'Comme si mon soleil venait de se lever.', style: 'serif' },
     ],
@@ -62,6 +62,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '6%' },
       { src: '/images/narrative/01b.jpg', alt: 'Regard', size: 'w-16 h-16 md:w-32 md:h-32', top: '12%', right: '10%' },
       { src: '/images/narrative/01c.jpg', alt: 'Nous', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '10%', right: '20%' },
+      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '15%', left: '12%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '5%', right: '35%' },
@@ -101,6 +102,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-24 h-24 md:w-44 md:h-44', top: '6%', right: '6%' },
       { src: '/images/narrative/03b.jpg', alt: 'Mains', size: 'w-28 h-28 md:w-32 md:h-32', bottom: '12%', right: '15%' },
       { src: '/images/narrative/03c.jpg', alt: 'Tendresse', size: 'w-32 h-32 md:w-36 md:h-36', bottom: '8%', left: '6%' },
+      { src: '/images/narrative/03d.mp4', alt: 'Douceur', size: 'w-16 h-16 md:w-28 md:h-28', top: '18%', left: '8%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', top: '10%', left: '3%' },
@@ -116,9 +118,9 @@ const VERSES: Verse[] = [
       { text: 'C\u2019est plus fort que tout ce que je sais.', style: 'serif' },
     ],
     photos: [
-      { src: '/images/narrative/04a.jpg', alt: 'Intensité', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '8%' },
+      { src: '/images/narrative/04a.mp4', alt: 'Intensité', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '8%' },
       { src: '/images/narrative/04b.jpg', alt: 'Passion', size: 'w-18 h-18 md:w-36 md:h-36', top: '15%', right: '5%' },
-      { src: '/images/narrative/04c.jpg', alt: 'Force', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '20%' },
+      { src: '/images/narrative/04c.mp4', alt: 'Force', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '20%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', variant: 'gold', bottom: '10%', right: '5%' },
@@ -138,6 +140,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/05a.jpg', alt: 'Moue', size: 'w-24 h-24 md:w-44 md:h-44', top: '5%', left: '5%' },
       { src: '/images/narrative/05b.jpg', alt: 'Yeux', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '15%', left: '12%' },
       { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-18 h-18 md:w-36 md:h-36', top: '12%', right: '8%' },
+      { src: '/images/narrative/05d.mp4', alt: 'Rire', size: 'w-20 h-20 md:w-36 md:h-36', bottom: '8%', right: '6%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', bottom: '5%', right: '3%' },
@@ -156,7 +159,7 @@ const VERSES: Verse[] = [
     photos: [
       { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-20 h-20 md:w-40 md:h-40', top: '10%', right: '6%' },
       { src: '/images/narrative/06b.jpg', alt: 'Bras', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '10%', left: '5%' },
-      { src: '/images/narrative/06c.jpg', alt: 'Ensemble', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '8%', right: '18%' },
+      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '8%', right: '18%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '5%', left: '3%' },
@@ -175,7 +178,7 @@ const VERSES: Verse[] = [
     photos: [
       { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-18 h-18 md:w-36 md:h-36', top: '6%', left: '10%' },
       { src: '/images/narrative/07b.jpg', alt: 'Émotion', size: 'w-24 h-24 md:w-44 md:h-44', top: '10%', right: '5%' },
-      { src: '/images/narrative/07c.jpg', alt: 'Vérité', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '12%', left: '8%' },
+      { src: '/images/narrative/07c.mp4', alt: 'Vérité', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '12%', left: '8%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', variant: 'gold', bottom: '5%', right: '5%' },
@@ -195,6 +198,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-24 h-24 md:w-44 md:h-44', top: '8%', left: '5%' },
       { src: '/images/narrative/08b.jpg', alt: 'Mains', size: 'w-28 h-28 md:w-32 md:h-32', bottom: '10%', right: '8%' },
       { src: '/images/narrative/08c.jpg', alt: 'Chaleur', size: 'w-32 h-32 md:w-36 md:h-36', bottom: '15%', left: '15%' },
+      { src: '/images/narrative/08d.mp4', alt: 'Proche', size: 'w-18 h-18 md:w-32 md:h-32', top: '6%', right: '5%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '5%', right: '4%' },
@@ -214,6 +218,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/09a.jpg', alt: 'Sérénité', size: 'w-20 h-20 md:w-40 md:h-40', top: '6%', right: '10%' },
       { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '8%' },
       { src: '/images/narrative/09c.jpg', alt: 'Retour', size: 'w-16 h-16 md:w-28 md:h-28', top: '15%', left: '5%' },
+      { src: '/images/narrative/09d.mp4', alt: 'Douceur', size: 'w-20 h-20 md:w-36 md:h-36', bottom: '12%', right: '5%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', variant: 'gold', bottom: '10%', right: '3%' },
@@ -252,6 +257,7 @@ const VERSES: Verse[] = [
       { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-24 h-24 md:w-44 md:h-44', top: '5%', left: '5%' },
       { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '12%', right: '6%' },
       { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-18 h-18 md:w-36 md:h-36', top: '15%', right: '8%' },
+      { src: '/images/narrative/11d.mp4', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '8%', left: '10%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', bottom: '5%', left: '3%' },
@@ -263,14 +269,14 @@ const VERSES: Verse[] = [
   {
     accent: 'script-finale',
     lines: [
-      { text: 'Je suis là.', style: 'script' },
+      { text: 'Eve, je suis là.', style: 'script' },
       { text: 'Et je reste.', style: 'script' },
       { text: 'Toujours.', style: 'script' },
     ],
     photos: [
-      { src: '/images/narrative/12a.jpg', alt: 'Promesse', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '10%' },
+      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '10%' },
       { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-24 h-24 md:w-48 md:h-48', bottom: '10%', right: '8%' },
-      { src: '/images/narrative/12c.jpg', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', top: '12%', right: '12%' },
+      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', top: '12%', right: '12%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', variant: 'gold', top: '5%', right: '3%' },
@@ -312,7 +318,7 @@ function lineClass(style: LineStyle, isFirst: boolean, accent?: Verse['accent'])
    ────────────────────────────────────────── */
 
 function PhotoSphere({ data }: { data: PhotoSphereData }) {
-  const usePlaceholder = true; // TODO: false quand photos prêtes
+  const isVideo = data.src.endsWith('.mp4');
 
   return (
     <div
@@ -324,23 +330,23 @@ function PhotoSphere({ data }: { data: PhotoSphereData }) {
         ...(data.right ? { right: data.right } : {}),
       }}
     >
-      {usePlaceholder ? (
-        <div className="absolute inset-0 flex items-center justify-center bg-blush/40 backdrop-blur-sm">
-          <div className="flex flex-col items-center gap-1 text-charcoal/20">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-              <circle cx="9" cy="9" r="2" />
-              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-            </svg>
-            <span className="font-sans text-[9px] leading-tight text-center px-1">{data.alt}</span>
-          </div>
-        </div>
+      {isVideo ? (
+        <video
+          src={data.src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       ) : (
         <Image
           src={data.src}
           alt={data.alt}
           width={176}
           height={176}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover"
           sizes="176px"
         />
@@ -542,17 +548,13 @@ export default function DecouverteSection() {
           className="photo-reveal absolute inset-0 z-0"
           style={{ clipPath: 'inset(30% 25% 30% 25% round 1.5rem)' }}
         >
-          {/* TODO: remplacer par <Image> quand la photo est prête */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blush via-rose-soft/30 to-cream flex items-center justify-center">
-            <div className="flex flex-col items-center gap-4 opacity-30">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" className="text-charcoal">
-                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                <circle cx="9" cy="9" r="2" />
-                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-              </svg>
-              <span className="font-sans text-sm text-charcoal tracking-widest uppercase">Notre photo</span>
-            </div>
-          </div>
+          <img
+            src="/images/narrative/finale-hero.jpg"
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
 
         {/* Orbes derrière le texte */}
@@ -562,7 +564,7 @@ export default function DecouverteSection() {
         {/* Texte centré par-dessus */}
         <div className="finale-text relative z-10 min-h-[100dvh] flex flex-col items-center justify-center text-center px-6">
           <p className="font-script text-3xl md:text-5xl text-warm-white drop-shadow-lg leading-relaxed">
-            Notre histoire continue...
+            Eve, notre histoire continue...
           </p>
           <div className="w-12 h-px mt-5 bg-warm-white/40" />
           <p className="font-serif text-lg md:text-xl text-warm-white/70 font-light mt-4 max-w-sm drop-shadow-md">

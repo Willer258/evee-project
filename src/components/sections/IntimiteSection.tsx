@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const LETTRE = [
-  { text: 'Ma reine,', style: 'signature' },
+  { text: 'Eve, ma reine,', style: 'signature' },
   { text: '', style: 'break' },
   { text: 'Si tu lis ces mots, c\u2019est que tu as trouvé le chemin jusqu\u2019ici.', style: 'line' },
   { text: 'Ce petit espace, je l\u2019ai construit pour toi. Rien que pour toi.', style: 'line' },
@@ -19,7 +19,7 @@ const LETTRE = [
   { text: 'Je ne suis pas parfait, et je ne le serai jamais.', style: 'line' },
   { text: 'Mais ce que je ressens pour toi \u2014 ça, c\u2019est la chose la plus vraie que je connaisse.', style: 'line' },
   { text: '', style: 'break' },
-  { text: 'Merci d\u2019être toi.', style: 'line' },
+  { text: 'Merci d\u2019être toi, Eve.', style: 'line' },
   { text: 'Merci d\u2019être là.', style: 'line' },
   { text: '', style: 'break' },
   { text: 'Avec tout mon amour,', style: 'closing' },
@@ -145,6 +145,7 @@ export default function IntimiteSection() {
                 src="/images/cloud.png"
                 alt=""
                 aria-hidden="true"
+                loading="lazy"
                 className="intimite-cloud absolute will-change-transform"
                 style={{
                   width: `clamp(${puff.size * 0.55}px, ${puff.size * 0.15}vw + ${puff.size * 0.35}px, ${puff.size}px)`,
@@ -161,7 +162,7 @@ export default function IntimiteSection() {
           {/* ── Letter on top of clouds ── */}
           <div className="relative z-10 px-8 py-14 md:px-16 md:py-20 text-center">
             <h2 className="intimite-title font-script text-4xl md:text-5xl text-rose-deep drop-shadow-sm">
-              Pour toi
+              Pour toi, Eve
             </h2>
 
             <div className="intimite-divider h-px w-16 mx-auto mt-5 mb-8 bg-gradient-to-r from-transparent via-gold-soft/40 to-transparent" />

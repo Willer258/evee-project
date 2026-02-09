@@ -53,7 +53,7 @@ const CHAPITRES = [
   {
     mois: 'Et après\u2009…',
     titre: 'La suite s\u2019écrit encore',
-    texte: 'Ce n\u2019est que le début. D\u2019autres mois, d\u2019autres souvenirs, d\u2019autres chapitres à vivre ensemble. L\u2019histoire continue.',
+    texte: 'Ce n\u2019est que le début, Eve. D\u2019autres mois, d\u2019autres souvenirs, d\u2019autres chapitres à vivre ensemble. Notre histoire ne fait que commencer.',
     side: 'right' as const,
   },
 ];

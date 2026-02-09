@@ -453,6 +453,30 @@
 }
 
 /* ──────────────────────────────────────────
+   Roulette — wheel & confetti
+   ────────────────────────────────────────── */
+
+/* Glow behind the wheel */
+.wheel-glow {
+  background: radial-gradient(circle,
+    oklch(0.75 0.08 10 / 0.12) 0%,
+    oklch(0.80 0.10 85 / 0.06) 40%,
+    transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* Breathing pulse for buttons */
+.btn-breathe {
+  animation: btn-breathe 3s ease-in-out infinite;
+}
+
+@keyframes btn-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.75 0.08 10 / 0.2); }
+  50% { box-shadow: 0 0 16px 4px oklch(0.75 0.08 10 / 0.15); }
+}
+
+/* ──────────────────────────────────────────
    Base
    ────────────────────────────────────────── */
 @layer base {

@@ -12,6 +12,12 @@ const VIDEOS = [
   '/videos/finale-2.mp4',
   '/videos/finale-3.mp4',
   '/videos/finale-4.mp4',
+  '/videos/finale-5.mp4',
+  '/videos/finale-6.mp4',
+  '/videos/finale-7.mp4',
+  '/videos/finale-8.mp4',
+  '/videos/finale-9.mp4',
+  '/videos/finale-10.mp4',
 ];
 
 const INTERVAL = 6000; // 6s per video
@@ -127,19 +133,8 @@ export default function VideoFinaleSection() {
               muted
               playsInline
               loop
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* Placeholder gradient — visible until real videos are added */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: [
-                  'linear-gradient(135deg, oklch(0.35 0.08 350) 0%, oklch(0.20 0.05 280) 100%)',
-                  'linear-gradient(135deg, oklch(0.30 0.06 30) 0%, oklch(0.18 0.04 300) 100%)',
-                  'linear-gradient(135deg, oklch(0.32 0.07 10) 0%, oklch(0.15 0.03 260) 100%)',
-                  'linear-gradient(135deg, oklch(0.28 0.05 340) 0%, oklch(0.12 0.02 270) 100%)',
-                ][i],
-              }}
+              preload="none"
+              className="absolute inset-0 w-full h-full object-cover object-center"
             />
           </div>
         ))}

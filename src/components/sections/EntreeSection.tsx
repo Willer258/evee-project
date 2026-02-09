@@ -9,52 +9,52 @@ gsap.registerPlugin(ScrollTrigger);
 
 const COLUMN_CARDS = [
   [
-    { h: 'aspect-[3/4]', label: 'nous' },
-    { h: 'aspect-[4/5]', label: 'rire' },
-    { h: 'aspect-[2/3]', label: 'soleil' },
-    { h: 'aspect-[3/4]', label: 'douceur' },
-    { h: 'aspect-[4/5]', label: 'toujours' },
-    { h: 'aspect-[3/5]', label: 'toi' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-01.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-02.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-03.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-04.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-05.jpg' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-06.jpg' },
   ],
   [
-    { h: 'aspect-[4/5]', label: 'premier' },
-    { h: 'aspect-[3/4]', label: 'regard' },
-    { h: 'aspect-[3/5]', label: 'plage' },
-    { h: 'aspect-[4/5]', label: 'soir' },
-    { h: 'aspect-[2/3]', label: 'café' },
-    { h: 'aspect-[3/4]', label: 'main' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-07.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-08.jpg' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-09.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-10.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-11.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-12.jpg' },
   ],
   [
-    { h: 'aspect-[2/3]', label: 'secret' },
-    { h: 'aspect-[4/5]', label: 'baiser' },
-    { h: 'aspect-[3/4]', label: 'nuit' },
-    { h: 'aspect-[3/5]', label: 'rêve' },
-    { h: 'aspect-[4/5]', label: 'chez nous' },
-    { h: 'aspect-[2/3]', label: 'matin' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-13.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-14.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-15.jpg' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-16.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-17.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-18.jpg' },
   ],
   [
-    { h: 'aspect-[3/5]', label: 'voyage' },
-    { h: 'aspect-[3/4]', label: 'musique' },
-    { h: 'aspect-[4/5]', label: 'silence' },
-    { h: 'aspect-[2/3]', label: 'promesse' },
-    { h: 'aspect-[3/4]', label: 'demain' },
-    { h: 'aspect-[4/5]', label: 'ensemble' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-19.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-20.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-21.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-22.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-23.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-24.jpg' },
   ],
   [
-    { h: 'aspect-[3/4]', label: 'sourire' },
-    { h: 'aspect-[2/3]', label: 'étoiles' },
-    { h: 'aspect-[4/5]', label: 'chaleur' },
-    { h: 'aspect-[3/5]', label: 'tendresse' },
-    { h: 'aspect-[3/4]', label: 'joie' },
-    { h: 'aspect-[4/5]', label: 'avenir' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-01.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-02.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-03.jpg' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-04.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-05.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-06.jpg' },
   ],
   [
-    { h: 'aspect-[4/5]', label: 'instant' },
-    { h: 'aspect-[3/4]', label: 'lumière' },
-    { h: 'aspect-[3/5]', label: 'refuge' },
-    { h: 'aspect-[4/5]', label: 'bonheur' },
-    { h: 'aspect-[2/3]', label: 'cœur' },
-    { h: 'aspect-[3/4]', label: 'infini' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-07.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-08.jpg' },
+    { h: 'aspect-[3/5]', src: '/images/entree/entree-09.jpg' },
+    { h: 'aspect-[4/5]', src: '/images/entree/entree-10.jpg' },
+    { h: 'aspect-[2/3]', src: '/images/entree/entree-11.jpg' },
+    { h: 'aspect-[3/4]', src: '/images/entree/entree-12.jpg' },
   ],
 ];
 
@@ -78,15 +78,16 @@ const CLOUD_PUFFS = [
   { left: '50%', top: '40%', size: 190, rotate: -40, opacity: 0.3 },
 ];
 
-function PhotoCard({ h, label }: { h: string; label: string }) {
+function PhotoCard({ h, src }: { h: string; src: string }) {
   return (
     <div className="glass-rose rounded-2xl overflow-hidden flex-shrink-0 w-full">
-      <div className={`${h} w-full bg-blush/40 flex items-center justify-center relative overflow-hidden`}>
-        <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-rose-soft/8 blur-2xl" />
-        <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-gold-soft/5 blur-xl" />
-        <span className="text-[10px] text-charcoal/20 font-sans font-light uppercase tracking-[0.2em] select-none">
-          {label}
-        </span>
+      <div className={`${h} w-full relative overflow-hidden`}>
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </div>
     </div>
   );
@@ -235,7 +236,7 @@ export default function EntreeSection() {
               <div className="masonry-col flex flex-col gap-3 will-change-transform">
                 {/* Doubled for seamless loop */}
                 {[...cards, ...cards].map((card, i) => (
-                  <PhotoCard key={i} h={card.h} label={card.label} />
+                  <PhotoCard key={i} h={card.h} src={card.src} />
                 ))}
               </div>
             </div>
@@ -268,6 +269,7 @@ export default function EntreeSection() {
               src="/images/cloud.png"
               alt=""
               aria-hidden="true"
+              loading="eager"
               className="cloud-puff"
               style={{
                 width: puff.size,
@@ -283,7 +285,7 @@ export default function EntreeSection() {
           {/* Text content — floats on the cloud */}
           <div className="relative z-10 px-10 py-14 md:px-16 md:py-16 text-center">
             <h2 className="hero-title font-serif text-5xl md:text-7xl font-light text-charcoal tracking-wide leading-[1.1]">
-              Bienvenue
+              Bienvenue, <span className="font-script text-rose-deep">Eve</span>
             </h2>
 
             <div className="hero-divider h-px w-20 mx-auto mt-6 mb-5 bg-gradient-to-r from-transparent via-gold-soft/40 to-transparent" />

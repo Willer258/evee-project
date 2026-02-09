@@ -14,109 +14,77 @@ const ROWS = [
     direction: 'left' as const,
     speed: 35,
     cards: [
-      { id: 'a1', w: 220, h: 150, label: 'Premier regard' },
-      { id: 'a2', w: 170, h: 150, label: 'Fou rire' },
-      { id: 'a3', w: 260, h: 150, label: 'Coucher de soleil' },
-      { id: 'a4', w: 190, h: 150, label: 'Main dans la main' },
-      { id: 'a5', w: 210, h: 150, label: 'Notre chanson' },
-      { id: 'a6', w: 240, h: 150, label: 'Danse lente' },
-      { id: 'a7', w: 180, h: 150, label: 'Étoiles' },
+      { id: 'a1', w: 220, src: '/images/souvenirs/souvenir-01.jpg' },
+      { id: 'a2', w: 170, src: '/images/souvenirs/souvenir-02.jpg' },
+      { id: 'a3', w: 260, src: '/images/souvenirs/souvenir-03.jpg' },
+      { id: 'a4', w: 190, src: '/images/souvenirs/souvenir-04.jpg' },
+      { id: 'a5', w: 210, src: '/images/souvenirs/souvenir-05.jpg' },
+      { id: 'a6', w: 240, src: '/images/souvenirs/souvenir-06.jpg' },
+      { id: 'a7', w: 180, src: '/images/souvenirs/souvenir-07.jpg' },
     ],
   },
   {
     direction: 'right' as const,
     speed: 28,
     cards: [
-      { id: 'b1', w: 190, h: 160, label: 'Balade en ville' },
-      { id: 'b2', w: 250, h: 160, label: 'Éclat de rire' },
-      { id: 'b3', w: 170, h: 160, label: 'Café du matin' },
-      { id: 'b4', w: 230, h: 160, label: 'Pluie ensemble' },
-      { id: 'b5', w: 200, h: 160, label: 'Secret partagé' },
-      { id: 'b6', w: 180, h: 160, label: 'Nuit étoilée' },
-      { id: 'b7', w: 220, h: 160, label: 'Tendresse' },
+      { id: 'b1', w: 190, src: '/images/souvenirs/souvenir-08.jpg' },
+      { id: 'b2', w: 250, src: '/images/souvenirs/souvenir-09.jpg' },
+      { id: 'b3', w: 170, src: '/images/souvenirs/souvenir-10.jpg' },
+      { id: 'b4', w: 230, src: '/images/souvenirs/souvenir-11.jpg' },
+      { id: 'b5', w: 200, src: '/images/souvenirs/souvenir-12.jpg' },
+      { id: 'b6', w: 180, src: '/images/souvenirs/souvenir-13.jpg' },
+      { id: 'b7', w: 220, src: '/images/souvenirs/souvenir-14.jpg' },
     ],
   },
   {
     direction: 'left' as const,
     speed: 32,
     cards: [
-      { id: 'c1', w: 260, h: 140, label: 'Voyage' },
-      { id: 'c2', w: 180, h: 140, label: 'Cuisine à deux' },
-      { id: 'c3', w: 210, h: 140, label: 'Câlin du soir' },
-      { id: 'c4', w: 170, h: 140, label: 'Surprise' },
-      { id: 'c5', w: 240, h: 140, label: 'Plage dorée' },
-      { id: 'c6', w: 200, h: 140, label: 'Promesse' },
-      { id: 'c7', w: 190, h: 140, label: 'Bonheur' },
+      { id: 'c1', w: 260, src: '/images/souvenirs/souvenir-15.jpg' },
+      { id: 'c2', w: 180, src: '/images/souvenirs/souvenir-16.jpg' },
+      { id: 'c3', w: 210, src: '/images/souvenirs/souvenir-17.jpg' },
+      { id: 'c4', w: 170, src: '/images/souvenirs/souvenir-18.jpg' },
+      { id: 'c5', w: 240, src: '/images/souvenirs/souvenir-19.jpg' },
+      { id: 'c6', w: 200, src: '/images/souvenirs/souvenir-20.jpg' },
+      { id: 'c7', w: 190, src: '/images/souvenirs/souvenir-21.jpg' },
     ],
   },
   {
     direction: 'right' as const,
     speed: 25,
     cards: [
-      { id: 'd1', w: 200, h: 155, label: 'Regard complice' },
-      { id: 'd2', w: 170, h: 155, label: 'Matin paresseux' },
-      { id: 'd3', w: 240, h: 155, label: 'Fête à deux' },
-      { id: 'd4', w: 220, h: 155, label: 'Silence doux' },
-      { id: 'd5', w: 190, h: 155, label: 'Premier "je t\'aime"' },
-      { id: 'd6', w: 260, h: 155, label: 'Pour toujours' },
-      { id: 'd7', w: 180, h: 155, label: 'Chaleur' },
+      { id: 'd1', w: 200, src: '/images/souvenirs/souvenir-22.jpg' },
+      { id: 'd2', w: 170, src: '/images/souvenirs/souvenir-23.jpg' },
+      { id: 'd3', w: 240, src: '/images/souvenirs/souvenir-24.jpg' },
+      { id: 'd4', w: 220, src: '/images/souvenirs/souvenir-25.jpg' },
+      { id: 'd5', w: 190, src: '/images/souvenirs/souvenir-26.jpg' },
+      { id: 'd6', w: 260, src: '/images/souvenirs/souvenir-27.jpg' },
+      { id: 'd7', w: 180, src: '/images/souvenirs/souvenir-28.jpg' },
     ],
   },
 ];
 
-// Couleurs stables par index (pas de Math.random dans le render)
-const CARD_HUES = [
-  350, 15, 30, 5, 340, 20, 355, 10, 25, 0, 345, 35, 8, 18, 330,
-  12, 28, 3, 22, 338, 16, 348, 6, 32, 14, 342, 26, 2, 20, 336,
-];
-
 interface PhotoCardProps {
   w: number;
-  h: number;
-  label: string;
+  src: string;
   index: number;
   onClick: () => void;
 }
 
-function PhotoCard({ w, h, label, index, onClick }: PhotoCardProps) {
-  const hue = CARD_HUES[index % CARD_HUES.length];
-
+function PhotoCard({ w, src, onClick }: PhotoCardProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="rounded-2xl overflow-hidden relative flex-shrink-0 cursor-pointer group"
-      style={{ width: w, height: h }}
+      className="rounded-2xl overflow-hidden relative flex-shrink-0 cursor-pointer group h-full"
+      style={{ width: w }}
     >
-      {/* Placeholder gradient vertical */}
-      <div
-        className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-        style={{
-          background: `linear-gradient(180deg,
-            oklch(0.88 0.05 ${hue} / 0.5),
-            oklch(0.93 0.03 ${hue + 40} / 0.35))`,
-        }}
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      {/* Glass overlay */}
-      <div
-        className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
-        style={{
-          background: 'oklch(1 0 0 / 0.15)',
-          backdropFilter: 'blur(1px)',
-        }}
-      />
-      {/* Photo icon placeholder */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <svg className="w-8 h-8 text-charcoal/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      </div>
-      {/* Label */}
-      <div className="absolute inset-0 flex items-end p-3">
-        <span className="font-sans text-[11px] text-charcoal/35 font-light tracking-wide">
-          {label}
-        </span>
-      </div>
       {/* Bordure */}
       <div
         className="absolute inset-0 rounded-2xl pointer-events-none transition-all duration-300 group-hover:shadow-lg"
@@ -227,8 +195,6 @@ function PhotoViewer({
     }
   }, [goNext, goPrev]);
 
-  const hue = CARD_HUES[current % CARD_HUES.length];
-
   return (
     <div
       ref={overlayRef}
@@ -247,49 +213,23 @@ function PhotoViewer({
         onTouchEnd={handleTouchEnd}
       >
         {/* Photo card */}
-        <div className="aspect-[4/3] rounded-3xl overflow-hidden relative">
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(180deg,
-                oklch(0.88 0.06 ${hue} / 0.6),
-                oklch(0.92 0.04 ${hue + 30} / 0.4))`,
-            }}
+        <div className="aspect-[3/4] md:aspect-[4/3] rounded-3xl overflow-hidden relative bg-charcoal/40">
+          <img
+            src={card.src}
+            alt=""
+            className="absolute inset-0 w-full h-full object-contain"
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-            <svg className="w-14 h-14 text-charcoal/15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.8} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
           <div
             className="absolute inset-0 rounded-3xl pointer-events-none"
             style={{ border: '1px solid oklch(1 0 0 / 0.2)' }}
           />
         </div>
 
-        {/* Label + counter */}
-        <div className="mt-4 flex items-center justify-between px-1">
-          <p className="font-serif text-lg text-warm-white/80 font-light">{card.label}</p>
+        {/* Counter */}
+        <div className="mt-4 flex items-center justify-center px-1">
           <span className="font-sans text-xs text-warm-white/40">
             {current + 1} / {ALL_CARDS.length}
           </span>
-        </div>
-
-        {/* Dots indicator */}
-        <div className="flex justify-center gap-1.5 mt-4">
-          {ALL_CARDS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => animateToSlide(i, i > current ? 1 : -1)}
-              className="w-1.5 h-1.5 rounded-full transition-all duration-300"
-              style={{
-                background: i === current
-                  ? 'oklch(0.80 0.10 85)'
-                  : 'oklch(1 0 0 / 0.2)',
-                transform: i === current ? 'scale(1.5)' : 'scale(1)',
-              }}
-            />
-          ))}
         </div>
       </div>
 
@@ -416,15 +356,15 @@ export default function SouvenirsSection() {
         <div className="absolute inset-0 grain pointer-events-none z-30" />
 
         {/* Masonry grid horizontal */}
-        <div className="masonry-grid absolute inset-0 z-0 flex flex-col justify-center gap-3 overflow-hidden">
+        <div className="masonry-grid absolute inset-0 z-0 flex flex-col gap-3 py-3 overflow-hidden">
           {ROWS.map((row, i) => (
             <div
               key={i}
-              className="masonry-row overflow-hidden"
+              className="masonry-row overflow-hidden flex-1"
               data-direction={row.direction}
               data-speed={row.speed}
             >
-              <div className="masonry-inner flex gap-3 w-max">
+              <div className="masonry-inner flex gap-3 w-max h-full">
                 {/* Rendu 2x pour boucle infinie seamless */}
                 {[0, 1].map((copy) =>
                   row.cards.map((card) => {
@@ -433,8 +373,7 @@ export default function SouvenirsSection() {
                       <PhotoCard
                         key={`${card.id}-${copy}`}
                         w={card.w}
-                        h={card.h}
-                        label={card.label}
+                        src={card.src}
                         index={idx}
                         onClick={() => handleCardClick(card.id)}
                       />
@@ -466,6 +405,19 @@ export default function SouvenirsSection() {
           <p className="souvenirs-subtitle font-sans text-base text-charcoal/50 font-light max-w-xs">
             Le temps suspendu...
           </p>
+          <a
+            href="https://photos.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="souvenirs-subtitle mt-8 font-sans text-sm text-charcoal/60 font-light tracking-wide px-6 py-2.5 rounded-full transition-all duration-300 hover:text-charcoal/80 hover:scale-105 inline-block pointer-events-auto"
+            style={{
+              background: 'oklch(0.97 0.01 80 / 0.5)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid oklch(0.80 0.10 85 / 0.25)',
+            }}
+          >
+            Voir plus
+          </a>
         </div>
       </section>
 

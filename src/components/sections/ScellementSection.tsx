@@ -90,7 +90,7 @@ export default function ScellementSection() {
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-gold-soft/40 to-transparent" />
 
           <p className="scellement-subtitle font-sans text-lg text-charcoal/50 font-light max-w-xs leading-relaxed">
-            Aujourd&apos;hui, demain, et tous les jours d&apos;après.
+            Eve, aujourd&apos;hui, demain, et tous les jours d&apos;après.
           </p>
         </div>
       </div>
