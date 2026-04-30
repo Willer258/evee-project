@@ -51,9 +51,21 @@ const CHAPITRES = [
     side: 'left' as const,
   },
   {
+    mois: 'Mars',
+    titre: 'Les premières fractures',
+    texte: 'Quelque chose s\u2019est mis à se troubler. Les questions sont arrivées sans prévenir. La douceur restait \u2014 le doute aussi.',
+    side: 'right' as const,
+  },
+  {
+    mois: 'Avril',
+    titre: 'Le retrait',
+    texte: 'On a posé les choses. Cette semaine, on s\u2019est séparés. Pas par colère \u2014 par épuisement de ne pas se rejoindre.',
+    side: 'left' as const,
+  },
+  {
     mois: 'Et après\u2009…',
-    titre: 'La suite s\u2019écrit encore',
-    texte: 'Ce n\u2019est que le début, Eve. D\u2019autres mois, d\u2019autres souvenirs, d\u2019autres chapitres à vivre ensemble. Notre histoire ne fait que commencer.',
+    titre: 'Ce qui reste à écrire',
+    texte: 'L\u2019avenir, je ne le vois pas. Si un jour tu fais un choix, et si tu l\u2019assumes \u2014 peut-être que la suite s\u2019écrira encore. Sinon, ce qui a été a vraiment été.',
     side: 'right' as const,
   },
 ];

@@ -38,7 +38,13 @@ interface SphereData {
   bottom?: string;
 }
 
+interface ChapterMeta {
+  roman: string;        // I, II, III
+  title: string;        // titre du chapitre
+}
+
 interface Verse {
+  chapter: ChapterMeta;
   lines: NarrativeLine[];
   accent?: 'title' | 'script-finale';
   photos: PhotoSphereData[];
@@ -50,239 +56,95 @@ interface Verse {
    ────────────────────────────────────────── */
 
 const VERSES: Verse[] = [
-  // 1 — Douce
+  // 1 — Tout ce qui a été (et qui reste vrai)
   {
+    chapter: { roman: 'I', title: 'Tout ce qui a été' },
     accent: 'title',
     lines: [
-      { text: 'Eve, quand tu es là...', style: 'serif' },
-      { text: 'mon visage sourit sans y penser.', style: 'serif' },
-      { text: 'Comme si mon soleil venait de se lever.', style: 'serif' },
+      { text: 'Eve, depuis que tu es là...', style: 'serif' },
+      { text: 'mon quotidien a pris un goût qu\u2019il n\u2019avait pas.', style: 'serif' },
+      { text: 'Tes repas, tes gestes, ta voix \u2014', style: 'serif' },
+      { text: 'loin des miens, tu as posé un chez-moi sans bruit, sans calcul.', style: 'serif' },
+      { text: 'Ton corps contre le mien la nuit,', style: 'sans-italic' },
+      { text: 'ta respiration qui apaise tout.', style: 'sans-italic' },
+      { text: 'Quand on dormait, j\u2019avais l\u2019illusion d\u2019un début de famille \u2014', style: 'sans-italic' },
+      { text: 'oui, oui, une part de moi imaginait déjà nos enfants. Vas-y, moque-toi.', style: 'sans-italic' },
+      { text: 'Je t\u2019aime, vraiment, sans moitié.', style: 'serif-bold' },
+      { text: 'Je voulais construire, prendre le temps, durer.', style: 'serif' },
     ],
     photos: [
-      { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '6%' },
-      { src: '/images/narrative/01b.jpg', alt: 'Regard', size: 'w-16 h-16 md:w-32 md:h-32', top: '12%', right: '10%' },
-      { src: '/images/narrative/01c.jpg', alt: 'Nous', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '10%', right: '20%' },
-      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '15%', left: '12%' },
+      { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-20 h-20 md:w-40 md:h-40', top: '5%', left: '5%' },
+      { src: '/images/narrative/02b.jpg', alt: 'Douceur', size: 'w-24 h-24 md:w-44 md:h-44', top: '32%', left: '4%' },
+      { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-18 h-18 md:w-36 md:h-36', top: '8%', right: '5%' },
+      { src: '/images/narrative/04b.jpg', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', top: '40%', right: '4%' },
+      { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '20%', left: '6%' },
+      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '8%', right: '8%' },
     ],
     spheres: [
-      { size: 'water-sphere-lg', top: '5%', right: '35%' },
-      { size: 'water-sphere-md', variant: 'gold', bottom: '15%', left: '5%' },
-      { size: 'water-sphere-sm', bottom: '30%', right: '8%' },
-      { size: 'water-sphere-xl', top: '55%', left: '2%' },
+      { size: 'water-sphere-lg', top: '20%', right: '30%' },
+      { size: 'water-sphere-md', variant: 'gold', top: '55%', left: '38%' },
+      { size: 'water-sphere-sm', bottom: '15%', right: '30%' },
+      { size: 'water-sphere-xl', bottom: '5%', left: '2%' },
     ],
   },
-  // 2 — Tendre
+  // 2 — Ce qui est maintenant
   {
+    chapter: { roman: 'II', title: 'Ce qui est maintenant' },
     lines: [
-      { text: 'Tu fais taire la solitude.', style: 'serif' },
-      { text: 'Tu chasses même la lassitude.', style: 'serif' },
-      { text: 'Rien qu\u2019en étant là,', style: 'serif' },
-      { text: 'sans même un éclat.', style: 'serif' },
+      { text: 'Mais il y avait des n\u0153uds.', style: 'sans-italic' },
+      { text: 'Ta façon de voir, tes peurs,', style: 'sans-italic' },
+      { text: 'ce que tu portais et que je n\u2019arrivais pas à dénouer.', style: 'sans-italic' },
+      { text: 'À la fin, ça blessait plus que ça rassurait \u2014', style: 'sans-italic' },
+      { text: 'pas par ta faute, pas par la mienne.', style: 'serif' },
+      { text: 'Deux personnes qui s\u2019aiment ne se rejoignent pas toujours.', style: 'serif' },
+      { text: 'Cette semaine, on a posé les choses.', style: 'serif' },
+      { text: 'Pas un cri, pas un drame \u2014', style: 'serif' },
+      { text: 'juste un pas en arrière, fatigué et tendre.', style: 'serif' },
+      { text: 'Et me voilà ce soir, seul à penser à toi sans le vouloir,', style: 'sans-italic' },
+      { text: 'dans un silence qui n\u2019a pas la même couleur.', style: 'sans-italic' },
     ],
     photos: [
-      { src: '/images/narrative/02a.jpg', alt: 'Présence', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', left: '15%' },
-      { src: '/images/narrative/02b.jpg', alt: 'Douceur', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '8%', left: '8%' },
-      { src: '/images/narrative/02c.jpg', alt: 'Silence', size: 'w-16 h-16 md:w-28 md:h-28', top: '20%', right: '8%' },
+      { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-20 h-20 md:w-40 md:h-40', top: '6%', left: '6%' },
+      { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', right: '5%' },
+      { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-24 h-24 md:w-44 md:h-44', top: '38%', left: '5%' },
+      { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-20 h-20 md:w-40 md:h-40', top: '42%', right: '4%' },
+      { src: '/images/narrative/10a.jpg', alt: 'Distance', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '20%', left: '8%' },
+      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '8%', right: '6%' },
     ],
     spheres: [
-      { size: 'water-sphere-lg', variant: 'gold', top: '60%', right: '4%' },
-      { size: 'water-sphere-md', bottom: '5%', right: '30%' },
-      { size: 'water-sphere-sm', top: '5%', left: '40%' },
+      { size: 'water-sphere-xl', top: '15%', left: '38%' },
+      { size: 'water-sphere-md', variant: 'gold', top: '50%', right: '32%' },
+      { size: 'water-sphere-sm', top: '60%', left: '4%' },
+      { size: 'water-sphere-lg', bottom: '5%', right: '2%' },
     ],
   },
-  // 3 — Sensuelle
+  // 3 — Ce qui reste, malgré tout
   {
+    chapter: { roman: 'III', title: 'Ce qui reste, malgré tout' },
     lines: [
-      { text: 'Tes gestes, tes habitudes...', style: 'serif' },
-      { text: 'ta main qui replace une mèche avec douceur,', style: 'sans-italic' },
-      { text: 'tes ongles vérifiés pendant des heures,', style: 'sans-italic' },
-      { text: 'tes bras croisés, plein de pudeur.', style: 'sans-italic' },
+      { text: 'L\u2019avenir, je ne le vois pas \u2014', style: 'serif' },
+      { text: 'pas pour nous, pas comme avant.', style: 'serif' },
+      { text: 'Je ne peux plus rien promettre.', style: 'serif' },
+      { text: 'Le reste ne m\u2019appartient pas.', style: 'serif' },
+      { text: 'Si un jour tu trouves le courage de choisir, et de l\u2019assumer,', style: 'sans-italic' },
+      { text: 'la suite pourrait s\u2019écrire encore.', style: 'serif' },
+      { text: 'Mais je ne crois pas que ce sera moi qui en profiterai.', style: 'sans-italic' },
+      { text: 'Eve, tu comptes encore.', style: 'script' },
+      { text: 'Et je t\u2019aime, encore.', style: 'script' },
     ],
     photos: [
-      { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-24 h-24 md:w-44 md:h-44', top: '6%', right: '6%' },
-      { src: '/images/narrative/03b.jpg', alt: 'Mains', size: 'w-28 h-28 md:w-32 md:h-32', bottom: '12%', right: '15%' },
-      { src: '/images/narrative/03c.jpg', alt: 'Tendresse', size: 'w-32 h-32 md:w-36 md:h-36', bottom: '8%', left: '6%' },
-      { src: '/images/narrative/03d.mp4', alt: 'Douceur', size: 'w-16 h-16 md:w-28 md:h-28', top: '18%', left: '8%' },
+      { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-24 h-24 md:w-44 md:h-44', top: '6%', left: '5%' },
+      { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', right: '6%' },
+      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-24 h-24 md:w-48 md:h-48', top: '40%', right: '4%' },
+      { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-16 h-16 md:w-28 md:h-28', top: '45%', left: '6%' },
+      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '8%', left: '8%' },
+      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '10%', right: '8%' },
     ],
     spheres: [
-      { size: 'water-sphere-xl', top: '10%', left: '3%' },
-      { size: 'water-sphere-md', top: '50%', right: '3%' },
-      { size: 'water-sphere-sm', variant: 'gold', bottom: '25%', left: '20%' },
-    ],
-  },
-  // 4 — Intense
-  {
-    lines: [
-      { text: 'J\u2019y vais.', style: 'serif-bold' },
-      { text: 'Je plonge, sans filet.', style: 'serif-bold' },
-      { text: 'C\u2019est plus fort que tout ce que je sais.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/04a.mp4', alt: 'Intensité', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '8%' },
-      { src: '/images/narrative/04b.jpg', alt: 'Passion', size: 'w-18 h-18 md:w-36 md:h-36', top: '15%', right: '5%' },
-      { src: '/images/narrative/04c.mp4', alt: 'Force', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '20%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-lg', variant: 'gold', bottom: '10%', right: '5%' },
-      { size: 'water-sphere-md', top: '55%', left: '3%' },
-      { size: 'water-sphere-sm', top: '5%', right: '30%' },
-    ],
-  },
-  // 5 — Taquine
-  {
-    lines: [
-      { text: 'Tu boudes.', style: 'sans-italic' },
-      { text: 'Tes yeux au ciel, ta moue rebelle.', style: 'sans-italic' },
-      { text: 'Ta manière de répondre à côté...', style: 'sans-italic' },
-      { text: 'Tout ça me plaît, faut l\u2019avouer.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/05a.jpg', alt: 'Moue', size: 'w-24 h-24 md:w-44 md:h-44', top: '5%', left: '5%' },
-      { src: '/images/narrative/05b.jpg', alt: 'Yeux', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '15%', left: '12%' },
-      { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-18 h-18 md:w-36 md:h-36', top: '12%', right: '8%' },
-      { src: '/images/narrative/05d.mp4', alt: 'Rire', size: 'w-20 h-20 md:w-36 md:h-36', bottom: '8%', right: '6%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-xl', bottom: '5%', right: '3%' },
-      { size: 'water-sphere-md', top: '40%', left: '2%' },
-      { size: 'water-sphere-sm', variant: 'gold', top: '8%', right: '35%' },
-    ],
-  },
-  // 6 — Tendre
-  {
-    lines: [
-      { text: 'Même là,', style: 'serif' },
-      { text: 'j\u2019ai envie de te prendre dans mes bras.', style: 'serif' },
-      { text: 'Te garder contre moi,', style: 'serif' },
-      { text: 'malgré tout, malgré toi.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-20 h-20 md:w-40 md:h-40', top: '10%', right: '6%' },
-      { src: '/images/narrative/06b.jpg', alt: 'Bras', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '10%', left: '5%' },
-      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '8%', right: '18%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-lg', top: '5%', left: '3%' },
-      { size: 'water-sphere-md', variant: 'gold', top: '60%', right: '3%' },
-      { size: 'water-sphere-sm', bottom: '20%', left: '30%' },
-    ],
-  },
-  // 7 — Profonde
-  {
-    lines: [
-      { text: 'Derrière \u00AB\u00A0il m\u2019emmerde\u00A0\u00BB...', style: 'sans-italic' },
-      { text: 'il y a un c\u0153ur qui se perd.', style: 'serif' },
-      { text: 'Une émotion, une vraie.', style: 'serif' },
-      { text: 'Que tu caches \u2014 mais que je sais.', style: 'script' },
-    ],
-    photos: [
-      { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-18 h-18 md:w-36 md:h-36', top: '6%', left: '10%' },
-      { src: '/images/narrative/07b.jpg', alt: 'Émotion', size: 'w-24 h-24 md:w-44 md:h-44', top: '10%', right: '5%' },
-      { src: '/images/narrative/07c.mp4', alt: 'Vérité', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '12%', left: '8%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-xl', variant: 'gold', bottom: '5%', right: '5%' },
-      { size: 'water-sphere-md', top: '50%', left: '2%' },
-      { size: 'water-sphere-sm', top: '3%', left: '40%' },
-    ],
-  },
-  // 8 — Intime
-  {
-    lines: [
-      { text: 'Ça me rapproche.', style: 'serif' },
-      { text: 'De ton visage, de tes doigts.', style: 'sans-italic' },
-      { text: 'De tes mains posées sur moi.', style: 'sans-italic' },
-      { text: 'De ta chaleur, tout près de toi.', style: 'sans-italic' },
-    ],
-    photos: [
-      { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-24 h-24 md:w-44 md:h-44', top: '8%', left: '5%' },
-      { src: '/images/narrative/08b.jpg', alt: 'Mains', size: 'w-28 h-28 md:w-32 md:h-32', bottom: '10%', right: '8%' },
-      { src: '/images/narrative/08c.jpg', alt: 'Chaleur', size: 'w-32 h-32 md:w-36 md:h-36', bottom: '15%', left: '15%' },
-      { src: '/images/narrative/08d.mp4', alt: 'Proche', size: 'w-18 h-18 md:w-32 md:h-32', top: '6%', right: '5%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-lg', top: '5%', right: '4%' },
-      { size: 'water-sphere-md', variant: 'gold', top: '55%', right: '2%' },
-      { size: 'water-sphere-sm', bottom: '5%', left: '3%' },
-    ],
-  },
-  // 9 — Douce
-  {
-    lines: [
-      { text: 'Une sérénité qui m\u2019envahit.', style: 'serif' },
-      { text: 'Une chaleur qui m\u2019adoucit.', style: 'serif' },
-      { text: 'La tienne.', style: 'serif' },
-      { text: 'Celle qui fait que je reviens.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/09a.jpg', alt: 'Sérénité', size: 'w-20 h-20 md:w-40 md:h-40', top: '6%', right: '10%' },
-      { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '8%' },
-      { src: '/images/narrative/09c.jpg', alt: 'Retour', size: 'w-16 h-16 md:w-28 md:h-28', top: '15%', left: '5%' },
-      { src: '/images/narrative/09d.mp4', alt: 'Douceur', size: 'w-20 h-20 md:w-36 md:h-36', bottom: '12%', right: '5%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-xl', variant: 'gold', bottom: '10%', right: '3%' },
-      { size: 'water-sphere-md', top: '45%', left: '2%' },
-      { size: 'water-sphere-sm', top: '5%', right: '38%' },
-    ],
-  },
-  // 10 — Mélancolique
-  {
-    lines: [
-      { text: 'Quand je m\u2019éloigne...', style: 'serif' },
-      { text: 'c\u2019est un manque doux qui m\u2019accompagne.', style: 'serif' },
-      { text: 'Un silence un peu lourd,', style: 'serif' },
-      { text: 'en attendant ton retour.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/10a.jpg', alt: 'Distance', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', left: '8%' },
-      { src: '/images/narrative/10b.jpg', alt: 'Manque', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', right: '6%' },
-      { src: '/images/narrative/10c.jpg', alt: 'Attente', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '8%', left: '20%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-lg', bottom: '8%', right: '4%' },
-      { size: 'water-sphere-md', top: '50%', left: '3%' },
-      { size: 'water-sphere-sm', variant: 'gold', top: '3%', left: '35%' },
-    ],
-  },
-  // 11 — Généreuse
-  {
-    lines: [
-      { text: 'T\u2019offrir ma présence.', style: 'serif' },
-      { text: 'Mon énergie, mon essence.', style: 'serif' },
-      { text: 'Tout ce que j\u2019ai, sans compter.', style: 'serif' },
-      { text: 'Tout ce que je suis, pour toi, entier.', style: 'serif' },
-    ],
-    photos: [
-      { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-24 h-24 md:w-44 md:h-44', top: '5%', left: '5%' },
-      { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '12%', right: '6%' },
-      { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-18 h-18 md:w-36 md:h-36', top: '15%', right: '8%' },
-      { src: '/images/narrative/11d.mp4', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '8%', left: '10%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-xl', bottom: '5%', left: '3%' },
-      { size: 'water-sphere-md', variant: 'gold', top: '55%', right: '2%' },
-      { size: 'water-sphere-sm', top: '8%', right: '35%' },
-    ],
-  },
-  // 12 — Finale
-  {
-    accent: 'script-finale',
-    lines: [
-      { text: 'Eve, je suis là.', style: 'script' },
-      { text: 'Et je reste.', style: 'script' },
-      { text: 'Toujours.', style: 'script' },
-    ],
-    photos: [
-      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-20 h-20 md:w-40 md:h-40', top: '8%', left: '10%' },
-      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-24 h-24 md:w-48 md:h-48', bottom: '10%', right: '8%' },
-      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', top: '12%', right: '12%' },
-    ],
-    spheres: [
-      { size: 'water-sphere-xl', variant: 'gold', top: '5%', right: '3%' },
-      { size: 'water-sphere-lg', bottom: '8%', left: '3%' },
-      { size: 'water-sphere-md', top: '45%', left: '5%' },
-      { size: 'water-sphere-sm', bottom: '25%', right: '25%' },
+      { size: 'water-sphere-xl', variant: 'gold', top: '20%', right: '32%' },
+      { size: 'water-sphere-lg', bottom: '20%', left: '32%' },
+      { size: 'water-sphere-md', top: '55%', left: '2%' },
+      { size: 'water-sphere-sm', bottom: '5%', right: '38%' },
     ],
   },
 ];
@@ -361,8 +223,11 @@ function PhotoSphere({ data }: { data: PhotoSphereData }) {
 
 function VerseBlock({ verse, index }: { verse: Verse; index: number }) {
   return (
-    <div className="verse relative py-20 md:py-36 flex items-center justify-center px-5 md:px-6 overflow-hidden">
-      {/* Photo-sphères — 3 par vers */}
+    <div
+      className="verse relative py-32 md:py-56 flex items-center justify-center px-5 md:px-6 overflow-hidden min-h-[80vh]"
+      data-chapter={index + 1}
+    >
+      {/* Photo-sphères */}
       {verse.photos.map((photo, i) => (
         <PhotoSphere key={i} data={photo} />
       ))}
@@ -381,8 +246,24 @@ function VerseBlock({ verse, index }: { verse: Verse; index: number }) {
         />
       ))}
 
-      {/* Texte centré */}
+      {/* Texte centré, précédé d'un en-tête chapitre minimal */}
       <div className="relative z-10 flex flex-col items-center gap-3 md:gap-4 max-w-md text-center">
+        <div className="chapter-header flex flex-col items-center mb-4 md:mb-6">
+          <span
+            className="chapter-roman font-serif text-xs md:text-sm tracking-[0.4em] uppercase font-light"
+            style={{ color: 'oklch(0.80 0.10 85)' }}
+          >
+            Chapitre&nbsp;{verse.chapter.roman}
+          </span>
+          <h3 className="chapter-title font-serif text-xl md:text-2xl text-charcoal/75 font-light italic mt-2 leading-tight">
+            {verse.chapter.title}
+          </h3>
+          <span
+            className="chapter-divider mt-3 block h-px w-10"
+            style={{ background: 'oklch(0.80 0.10 85 / 0.45)' }}
+          />
+        </div>
+
         {verse.lines.map((line, i) => (
           <p key={i} className={lineClass(line.style ?? 'serif', i === 0, verse.accent)}>
             {line.text}
@@ -476,6 +357,17 @@ export default function DecouverteSection() {
       });
     });
 
+    // ── En-tête de chapitre — apparition douce avec les lignes ──
+    el.querySelectorAll('.verse').forEach((verse) => {
+      const header = verse.querySelector('.chapter-header');
+      if (header) {
+        gsap.from(header, {
+          opacity: 0, y: 25, filter: 'blur(4px)', ease: 'none',
+          scrollTrigger: { trigger: verse, start: 'top 88%', end: 'top 55%', scrub: 1 },
+        });
+      }
+    });
+
     // ═══ FINALE : photo reveal (style Radiance) ═══
     const finale = el.querySelector('.finale-section');
     if (finale) {
@@ -536,7 +428,7 @@ export default function DecouverteSection() {
   return (
     <div ref={container} className="gradient-romantic grain relative">
 
-      {/* 12 vers — flux continu */}
+      {/* 3 chapitres — parcours de lecture */}
       {VERSES.map((verse, i) => (
         <VerseBlock key={i} verse={verse} index={i} />
       ))}
@@ -563,12 +455,15 @@ export default function DecouverteSection() {
 
         {/* Texte centré par-dessus */}
         <div className="finale-text relative z-10 min-h-[100dvh] flex flex-col items-center justify-center text-center px-6">
-          <p className="font-script text-3xl md:text-5xl text-warm-white drop-shadow-lg leading-relaxed">
-            Eve, notre histoire continue...
+          <p className="font-serif text-base md:text-lg text-warm-white/65 font-light italic max-w-sm drop-shadow-md">
+            — Fin du parcours —
           </p>
-          <div className="w-12 h-px mt-5 bg-warm-white/40" />
-          <p className="font-serif text-lg md:text-xl text-warm-white/70 font-light mt-4 max-w-sm drop-shadow-md">
-            Chaque jour avec toi est une page que j&apos;ai envie d&apos;écrire.
+          <p className="font-script text-4xl md:text-6xl text-warm-white drop-shadow-lg leading-relaxed mt-4">
+            Eve, je t&apos;aime, encore.
+          </p>
+          <div className="w-12 h-px mt-6 bg-warm-white/40" />
+          <p className="font-script text-2xl md:text-3xl text-warm-white/85 mt-4 drop-shadow-md">
+            — Asura
           </p>
         </div>
       </div>

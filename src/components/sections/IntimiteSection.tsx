@@ -67,17 +67,18 @@ export default function IntimiteSection() {
     const el = container.current;
     if (!el) return;
 
-    // ── Entrance — scrub-linked so it always works ──
+    // ── Apparition — matérialisation lente, en bloc ──
+    // Stagger plus lent + scale moins agressif = nuage qui se forme, pas qui éclate.
     gsap.from('.intimite-cloud', {
-      scale: 0.3,
+      scale: 0.85,
       opacity: 0,
-      stagger: { each: 0.02, from: 'center' },
+      stagger: { each: 0.015, from: 'center' },
       ease: 'none',
       scrollTrigger: {
         trigger: el,
-        start: 'top 80%',
-        end: 'top 30%',
-        scrub: 1,
+        start: 'top 85%',
+        end: 'top 35%',
+        scrub: 1.2,
       },
     });
 
@@ -101,17 +102,20 @@ export default function IntimiteSection() {
       scrollTrigger: { trigger: el, start: 'top 40%', end: 'top 10%', scrub: 1 },
     });
 
-    // ── Cloud breathing — très doux, presque endormi ──
-    el.querySelectorAll<HTMLElement>('.intimite-cloud').forEach((puff, i) => {
-      gsap.to(puff, {
-        scale: 1.03,
-        duration: 5 + (i % 4) * 1.5,
+    // ── Drift global — un seul nuage qui flotte, pas 24 puffs qui scintillent ──
+    // On anime la masse entière (parent), les puffs gardent leur position relative
+    // les uns aux autres. Mouvement très lent, ease sinusoïdale, GPU-only.
+    const cloudMass = el.querySelector<HTMLElement>('.cloud-mass');
+    if (cloudMass) {
+      gsap.to(cloudMass, {
+        xPercent: 1.5,
+        yPercent: -1,
+        duration: 38,
         ease: 'sine.inOut',
         yoyo: true,
         repeat: -1,
-        delay: (i % 6) * 0.8,
       });
-    });
+    }
   }, { scope: container });
 
   return (

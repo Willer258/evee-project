@@ -4,11 +4,11 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { CircularGallery } from '@/components/ui/circular-gallery';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Lignes horizontales — alternance gauche / droite
-// Chaque ligne a des cartes de largeurs variées pour l'effet masonry
 const ROWS = [
   {
     direction: 'left' as const,
@@ -64,10 +64,12 @@ const ROWS = [
   },
 ];
 
+const ALL_CARDS = ROWS.flatMap((row) => row.cards);
+const GALLERY_IMAGES = ALL_CARDS.map((c) => ({ src: c.src }));
+
 interface PhotoCardProps {
   w: number;
   src: string;
-  index: number;
   onClick: () => void;
 }
 
@@ -85,7 +87,6 @@ function PhotoCard({ w, src, onClick }: PhotoCardProps) {
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      {/* Bordure */}
       <div
         className="absolute inset-0 rounded-2xl pointer-events-none transition-all duration-300 group-hover:shadow-lg"
         style={{ border: '1px solid oklch(1 0 0 / 0.2)' }}
@@ -94,170 +95,85 @@ function PhotoCard({ w, src, onClick }: PhotoCardProps) {
   );
 }
 
-// Liste plate de toutes les cartes pour le slider
-const ALL_CARDS = ROWS.flatMap((row) => row.cards);
+/* ──────────────────────────────────────────
+   GalleryViewer — overlay plein écran avec carrousel circulaire 3D
+   ────────────────────────────────────────── */
 
-// Slider viewer avec navigation
-function PhotoViewer({
+function GalleryViewer({
   initialIndex,
   onClose,
 }: {
   initialIndex: number;
   onClose: () => void;
 }) {
-  const [current, setCurrent] = useState(initialIndex);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const slideRef = useRef<HTMLDivElement>(null);
-  const card = ALL_CARDS[current];
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Animation d'ouverture
   useEffect(() => {
     const overlay = overlayRef.current;
-    const slide = slideRef.current;
-    if (!overlay || !slide) return;
-
+    const panel = panelRef.current;
+    if (!overlay || !panel) return;
     gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });
-    gsap.fromTo(slide,
-      { scale: 0.85, opacity: 0, y: 30 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.4)', delay: 0.08 },
+    gsap.fromTo(
+      panel,
+      { scale: 0.9, opacity: 0, y: 20 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', delay: 0.08 },
     );
   }, []);
 
-  // Animation de transition entre slides
-  const animateToSlide = useCallback((nextIndex: number, direction: number) => {
-    const slide = slideRef.current;
-    if (!slide) return;
-
-    gsap.to(slide, {
-      x: -direction * 60,
-      opacity: 0,
-      scale: 0.95,
-      duration: 0.2,
-      ease: 'power2.in',
-      onComplete: () => {
-        setCurrent(nextIndex);
-        gsap.fromTo(slide,
-          { x: direction * 60, opacity: 0, scale: 0.95 },
-          { x: 0, opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out' },
-        );
-      },
-    });
-  }, []);
-
-  const goNext = useCallback(() => {
-    const next = (current + 1) % ALL_CARDS.length;
-    animateToSlide(next, 1);
-  }, [current, animateToSlide]);
-
-  const goPrev = useCallback(() => {
-    const prev = (current - 1 + ALL_CARDS.length) % ALL_CARDS.length;
-    animateToSlide(prev, -1);
-  }, [current, animateToSlide]);
-
-  // Fermeture animée
   const handleClose = useCallback(() => {
     const overlay = overlayRef.current;
-    const slide = slideRef.current;
-
-    const tl = gsap.timeline({
-      onComplete: onClose,
-    });
-
-    if (slide) {
-      tl.to(slide, { scale: 0.85, opacity: 0, y: 20, duration: 0.25, ease: 'power2.in' }, 0);
-    }
-    if (overlay) {
-      tl.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.05);
-    }
+    const panel = panelRef.current;
+    const tl = gsap.timeline({ onComplete: onClose });
+    if (panel) tl.to(panel, { scale: 0.95, opacity: 0, y: 12, duration: 0.25, ease: 'power2.in' }, 0);
+    if (overlay) tl.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.05);
   }, [onClose]);
 
-  // Keyboard navigation
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
-      if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [handleClose, goNext, goPrev]);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [handleClose]);
 
-  // Touch swipe
-  const touchStart = useRef(0);
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientX;
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, []);
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    const diff = touchStart.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) goNext();
-      else goPrev();
-    }
-  }, [goNext, goPrev]);
 
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 py-10"
       onClick={handleClose}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-charcoal/70 backdrop-blur-md" />
+      {/* Backdrop sombre flouté */}
+      <div className="absolute inset-0 bg-charcoal/75 backdrop-blur-md" />
 
-      {/* Slide content */}
+      {/* Panneau carrousel */}
       <div
-        ref={slideRef}
-        className="relative z-10 w-[88vw] max-w-xl"
+        ref={panelRef}
+        className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl"
         onClick={(e) => e.stopPropagation()}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
       >
-        {/* Photo card */}
-        <div className="aspect-[3/4] md:aspect-[4/3] rounded-3xl overflow-hidden relative bg-charcoal/40">
-          <img
-            src={card.src}
-            alt=""
-            className="absolute inset-0 w-full h-full object-contain"
-          />
-          <div
-            className="absolute inset-0 rounded-3xl pointer-events-none"
-            style={{ border: '1px solid oklch(1 0 0 / 0.2)' }}
-          />
-        </div>
-
-        {/* Counter */}
-        <div className="mt-4 flex items-center justify-center px-1">
-          <span className="font-sans text-xs text-warm-white/40">
-            {current + 1} / {ALL_CARDS.length}
-          </span>
-        </div>
+        <CircularGallery
+          images={GALLERY_IMAGES}
+          initialIndex={initialIndex}
+          autoplay
+          intervalMs={5000}
+        />
       </div>
-
-      {/* Navigation arrows */}
-      <button
-        onClick={(e) => { e.stopPropagation(); goPrev(); }}
-        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center text-warm-white/60 hover:text-warm-white transition-colors"
-        style={{ background: 'oklch(0.25 0.01 270 / 0.4)', backdropFilter: 'blur(8px)' }}
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); goNext(); }}
-        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full flex items-center justify-center text-warm-white/60 hover:text-warm-white transition-colors"
-        style={{ background: 'oklch(0.25 0.01 270 / 0.4)', backdropFilter: 'blur(8px)' }}
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
 
       {/* Close button */}
       <button
         onClick={handleClose}
-        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center text-warm-white/60 hover:text-warm-white transition-colors"
-        style={{ background: 'oklch(0.25 0.01 270 / 0.4)', backdropFilter: 'blur(8px)' }}
+        aria-label="Fermer la galerie"
+        className="absolute top-4 right-4 z-20 w-11 h-11 rounded-full flex items-center justify-center text-warm-white/65 hover:text-warm-white transition-colors"
+        style={{ background: 'oklch(0.25 0.01 270 / 0.45)', backdropFilter: 'blur(8px)' }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
@@ -266,6 +182,10 @@ function PhotoViewer({
     </div>
   );
 }
+
+/* ──────────────────────────────────────────
+   Section principale
+   ────────────────────────────────────────── */
 
 export default function SouvenirsSection() {
   const container = useRef<HTMLElement>(null);
@@ -276,86 +196,75 @@ export default function SouvenirsSection() {
     if (idx !== -1) setViewerIndex(idx);
   }, []);
 
+  const handleVoirPlus = useCallback(() => {
+    setViewerIndex(0);
+  }, []);
+
   const handleClose = useCallback(() => {
     setViewerIndex(null);
   }, []);
 
-  useGSAP(() => {
-    const el = container.current;
-    if (!el) return;
+  useGSAP(
+    () => {
+      const el = container.current;
+      if (!el) return;
 
-    // Titre + sous-titre scrub
-    const title = el.querySelector('.souvenirs-title');
-    const subtitle = el.querySelector('.souvenirs-subtitle');
+      const title = el.querySelector('.souvenirs-title');
+      const subtitle = el.querySelector('.souvenirs-subtitle');
 
-    if (title) {
-      gsap.from(title, {
-        opacity: 0, y: 40, filter: 'blur(6px)', ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 70%', end: 'top 30%', scrub: 1 },
-      });
-    }
-    if (subtitle) {
-      gsap.from(subtitle, {
-        opacity: 0, y: 25, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 60%', end: 'top 25%', scrub: 1 },
-      });
-    }
-
-    // Animation infinie des lignes horizontales
-    el.querySelectorAll<HTMLElement>('.masonry-row').forEach((row) => {
-      const inner = row.querySelector<HTMLElement>('.masonry-inner');
-      if (!inner) return;
-
-      const direction = row.dataset.direction;
-      const speed = parseFloat(row.dataset.speed || '30');
-
-      // Les cartes sont déjà dupliquées en React (2x dans le JSX)
-      const totalWidth = inner.scrollWidth / 2;
-
-      if (direction === 'left') {
-        gsap.set(inner, { x: 0 });
-        gsap.to(inner, {
-          x: -totalWidth,
-          duration: speed,
-          ease: 'none',
-          repeat: -1,
-        });
-      } else {
-        gsap.set(inner, { x: -totalWidth });
-        gsap.to(inner, {
-          x: 0,
-          duration: speed,
-          ease: 'none',
-          repeat: -1,
+      if (title) {
+        gsap.from(title, {
+          opacity: 0, y: 40, filter: 'blur(6px)', ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top 70%', end: 'top 30%', scrub: 1 },
         });
       }
-    });
+      if (subtitle) {
+        gsap.from(subtitle, {
+          opacity: 0, y: 25, ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top 60%', end: 'top 25%', scrub: 1 },
+        });
+      }
 
-    // Fade-in du grid entier
-    const grid = el.querySelector('.masonry-grid');
-    if (grid) {
-      gsap.from(grid, {
-        opacity: 0, scale: 0.97, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 40%', scrub: 1 },
+      el.querySelectorAll<HTMLElement>('.masonry-row').forEach((row) => {
+        const inner = row.querySelector<HTMLElement>('.masonry-inner');
+        if (!inner) return;
+
+        const direction = row.dataset.direction;
+        const speed = parseFloat(row.dataset.speed || '30');
+        const totalWidth = inner.scrollWidth / 2;
+
+        if (direction === 'left') {
+          gsap.set(inner, { x: 0 });
+          gsap.to(inner, { x: -totalWidth, duration: speed, ease: 'none', repeat: -1 });
+        } else {
+          gsap.set(inner, { x: -totalWidth });
+          gsap.to(inner, { x: 0, duration: speed, ease: 'none', repeat: -1 });
+        }
       });
-    }
-  }, { scope: container });
+
+      const grid = el.querySelector('.masonry-grid');
+      if (grid) {
+        gsap.from(grid, {
+          opacity: 0, scale: 0.97, ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 40%', scrub: 1 },
+        });
+      }
+    },
+    { scope: container },
+  );
 
   let globalIndex = 0;
 
   return (
     <>
-      <section
-        ref={container}
-        className="relative min-h-[100dvh] overflow-hidden"
-      >
+      <section ref={container} className="relative min-h-[100dvh] overflow-hidden">
         {/* Fond */}
         <div className="absolute inset-0 gradient-romantic" />
 
         {/* Grain */}
         <div className="absolute inset-0 grain pointer-events-none z-30" />
 
-        {/* Masonry grid horizontal */}
+        {/* Masonry grid horizontal — défilement continu en bandes */}
         <div className="masonry-grid absolute inset-0 z-0 flex flex-col gap-3 py-3 overflow-hidden">
           {ROWS.map((row, i) => (
             <div
@@ -365,20 +274,18 @@ export default function SouvenirsSection() {
               data-speed={row.speed}
             >
               <div className="masonry-inner flex gap-3 w-max h-full">
-                {/* Rendu 2x pour boucle infinie seamless */}
                 {[0, 1].map((copy) =>
                   row.cards.map((card) => {
                     const idx = globalIndex++;
                     return (
                       <PhotoCard
-                        key={`${card.id}-${copy}`}
+                        key={`${card.id}-${copy}-${idx}`}
                         w={card.w}
                         src={card.src}
-                        index={idx}
                         onClick={() => handleCardClick(card.id)}
                       />
                     );
-                  })
+                  }),
                 )}
               </div>
             </div>
@@ -405,11 +312,10 @@ export default function SouvenirsSection() {
           <p className="souvenirs-subtitle font-sans text-base text-charcoal/50 font-light max-w-xs">
             Le temps suspendu...
           </p>
-          <a
-            href="https://photos.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="souvenirs-subtitle mt-8 font-sans text-sm text-charcoal/60 font-light tracking-wide px-6 py-2.5 rounded-full transition-all duration-300 hover:text-charcoal/80 hover:scale-105 inline-block pointer-events-auto"
+          <button
+            type="button"
+            onClick={handleVoirPlus}
+            className="souvenirs-subtitle mt-8 font-sans text-sm text-charcoal/60 font-light tracking-wide px-6 py-2.5 rounded-full transition-all duration-300 hover:text-charcoal/80 hover:scale-105 inline-block pointer-events-auto cursor-pointer"
             style={{
               background: 'oklch(0.97 0.01 80 / 0.5)',
               backdropFilter: 'blur(12px)',
@@ -417,14 +323,12 @@ export default function SouvenirsSection() {
             }}
           >
             Voir plus
-          </a>
+          </button>
         </div>
       </section>
 
-      {/* Photo viewer slider */}
-      {viewerIndex !== null && (
-        <PhotoViewer initialIndex={viewerIndex} onClose={handleClose} />
-      )}
+      {/* Viewer plein écran : carrousel circulaire 3D */}
+      {viewerIndex !== null && <GalleryViewer initialIndex={viewerIndex} onClose={handleClose} />}
     </>
   );
 }
