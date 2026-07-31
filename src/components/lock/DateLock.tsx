@@ -3,6 +3,9 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
+
+gsap.registerPlugin(TextPlugin);
 
 const TARGET_DAY = '03';
 const TARGET_MONTH = '08';
@@ -85,17 +88,23 @@ export default function DateLock({ onUnlock }: DateLockProps) {
       }, '-=0.1')
       .fromTo(
         '.lock-recognition',
-        { opacity: 0, scale: 0.95, y: 10 },
-        { opacity: 1, scale: 1, y: 0, duration: 1.2 },
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3 },
         '-=0.1',
       )
+      // La reconnaissance s'écrit, lettre après lettre
+      .to('.lock-recognition', {
+        text: 'Oui. C’est ce jour-là.',
+        duration: 1.8,
+        ease: 'none',
+      })
       .to('.lock-orb', {
         scale: 1.5,
         opacity: 0,
         duration: 1.5,
         stagger: 0.1,
-      }, '-=1')
-      .to('.lock-recognition', { opacity: 0, duration: 0.8, delay: 1.8 })
+      }, '-=0.6')
+      .to('.lock-recognition', { opacity: 0, duration: 0.8, delay: 1.6 })
       .to(container.current, { opacity: 0, duration: 0.6 });
   }, [unlocked, onUnlock]);
 
@@ -171,10 +180,11 @@ export default function DateLock({ onUnlock }: DateLockProps) {
         </div>
       </div>
 
-      {/* Recognition message */}
-      <p className="lock-recognition absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-script text-4xl md:text-5xl text-rose-deep opacity-0 whitespace-nowrap z-20 drop-shadow-sm">
-        Oui. C&apos;est ce jour-là.
-      </p>
+      {/* Recognition message — écrit lettre à lettre par TextPlugin */}
+      <p
+        className="lock-recognition absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-script text-4xl md:text-5xl text-rose-deep opacity-0 whitespace-nowrap z-20 drop-shadow-sm"
+        aria-label="Oui. C'est ce jour-là."
+      />
     </div>
   );
 }

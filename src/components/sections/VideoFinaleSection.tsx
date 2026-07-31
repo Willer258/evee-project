@@ -32,6 +32,19 @@ const VIDEO_MS = 6000;   // 6s par vidéo
 const FINALE_MS = 8000;  // la carte finale respire plus longtemps
 const FINALE_INDEX = VIDEOS.length; // index virtuel de la carte de conclusion
 
+/* Le jour où tout a commencé — le compteur vit depuis cette seconde */
+const ANNIVERSAIRE = new Date(2025, 7, 3);
+
+function dureeDepuis(depuis: Date) {
+  const totalSec = Math.max(0, Math.floor((Date.now() - depuis.getTime()) / 1000));
+  return {
+    jours: Math.floor(totalSec / 86400),
+    heures: Math.floor((totalSec % 86400) / 3600),
+    minutes: Math.floor((totalSec % 3600) / 60),
+    secondes: totalSec % 60,
+  };
+}
+
 /* Une seule phrase, déroulée sur tout le cycle */
 const PHRASES = [
   { from: 0, text: 'Un an de nous.' },
@@ -54,6 +67,15 @@ export default function VideoFinaleSection() {
   const progressRef = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(0);
   const [isInView, setIsInView] = useState(false);
+  const [duree, setDuree] = useState(() => dureeDepuis(ANNIVERSAIRE));
+
+  // Le compteur ne bat que lorsque la carte de conclusion est visible
+  useEffect(() => {
+    if (current !== FINALE_INDEX) return;
+    setDuree(dureeDepuis(ANNIVERSAIRE));
+    const id = setInterval(() => setDuree(dureeDepuis(ANNIVERSAIRE)), 1000);
+    return () => clearInterval(id);
+  }, [current]);
 
   const setVideoRef = useCallback((el: HTMLVideoElement | null, i: number) => {
     videoRefs.current[i] = el;
@@ -220,6 +242,9 @@ export default function VideoFinaleSection() {
         <div className="finale-card-item h-px w-16 bg-gradient-to-r from-transparent via-gold-soft/60 to-transparent" />
         <p className="finale-card-item font-script text-3xl md:text-4xl text-gold-soft drop-shadow-sm">
           et tous les jours d&rsquo;après…
+        </p>
+        <p className="finale-card-item font-sans text-sm md:text-base text-warm-white/55 font-light tracking-[0.08em] tabular-nums mt-2">
+          {duree.jours} jours · {duree.heures} h · {duree.minutes} min · {String(duree.secondes).padStart(2, '0')} s
         </p>
       </div>
 
