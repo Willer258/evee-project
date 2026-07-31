@@ -127,7 +127,7 @@ export default function EntreeSection() {
     // ── Orchestrated hero entrance ──
     // Titre découpé en lettres — chaque caractère émerge du nuage
     const titleEl = container.current?.querySelector('.hero-title');
-    const split = titleEl ? new SplitText(titleEl, { type: 'chars' }) : null;
+    const split = titleEl ? new SplitText(titleEl, { type: 'chars,words' }) : null;
     if (split) {
       gsap.set(split.chars, { opacity: 0, y: 26, rotateX: -55, transformPerspective: 600 });
     }

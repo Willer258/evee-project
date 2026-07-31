@@ -139,11 +139,10 @@ const VERSES: Verse[] = [
     photos: [
       // Symétrie retrouvée — elle et lui face à face, le reste en écho
       { src: '/images/narrative/bulle-03.mp4', alt: 'Toi qui racontes', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', left: '4%' },
-      { src: '/images/narrative/bulle-04.mp4', alt: 'Moi qui souris', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
+      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
       { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', left: '18%' },
       { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', right: '18%' },
       { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', left: '20%' },
-      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', right: '20%' },
       { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', left: '6%' },
       { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', right: '6%' },
     ],
