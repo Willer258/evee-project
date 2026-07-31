@@ -92,16 +92,19 @@ Texte affiché lors de la reconnaissance :
 
 ## 5. Structure du site (sections)
 
-Le site est composé de **6 sections plein écran**, montées uniquement après déverrouillage.
+Le site est composé de **7 sections plein écran**, montées uniquement après déverrouillage, précédées d'un **écran de chargement** (préchargement des photos, orbes, barre de progression).
 
-| Ordre | Section    | Rôle                            |
-| ----- | ---------- | ------------------------------- |
-| 1     | Entrée     | Passage vers le monde intérieur |
-| 2     | Découverte | Mise en valeur d’Evee           |
-| 3     | Souvenirs  | Mémoire partagée                |
-| 4     | Connexion  | Continuité du lien              |
-| 5     | Intimité   | Lettre d’amour                  |
-| 6     | Scellement | Ancrage final                   |
+| Ordre | Section      | Rôle                            |
+| ----- | ------------ | ------------------------------- |
+| 1     | Entrée       | Passage vers le monde intérieur |
+| 2     | Découverte   | Mise en valeur d’Evee           |
+| 3     | Souvenirs    | Mémoire partagée                |
+| 4     | Connexion    | Continuité du lien              |
+| 5     | Intimité     | Lettre d’amour                  |
+| 6     | Scellement   | Ancrage final                   |
+| 7     | Vidéo finale | Carrousel de vidéos souvenirs   |
+
+S'ajoute une **roulette à cadeaux** flottante (bulle + modal), hors du flux de scroll — voir §5.6.
 
 ---
 
@@ -137,7 +140,18 @@ Objectif :
 👉 ancrer l’amour dans le réel.
 
 
-### 5.4 Intimité
+### 5.4 Connexion
+
+* Timeline narrative en chapitres, mois par mois (Août → …)
+* Alternance gauche / droite
+* Poésie courte par chapitre
+
+Objectif :
+👉 montrer la continuité du lien, fondation après fondation.
+
+---
+
+### 5.5 Intimité
 
 * Lettre d’amour
 * Effet calligraphique
@@ -145,6 +159,21 @@ Objectif :
 
 Objectif :
 👉 moment de vulnérabilité et de vérité.
+
+---
+
+### 5.6 Scellement, vidéo finale & roulette
+
+* **Scellement** : ancrage final, orbes lumineuses
+* **Vidéo finale** : carrousel de 10 vidéos (6 s chacune)
+* **Roulette à cadeaux** : bulle flottante → modal de tirage
+  * 8 cadeaux pondérés (bisou, gâterie, massage, poème, dîner, dessert, cinéma, vœu)
+  * 1 tirage par semaine, réinitialisé chaque lundi
+  * état partagé via Firestore (fallback localStorage hors ligne)
+  * le vœu s'envoie par lien WhatsApp
+
+Objectif :
+👉 prolonger l'expérience dans le réel, semaine après semaine.
 
 
 ## 6. Direction artistique
@@ -175,10 +204,8 @@ Les personnages accompagnent, ils ne dominent jamais.
 
 ### Musique
 
-* Gérée via Howler.js
-* Démarrage progressif
-* Volume modéré
-* Toujours optionnelle
+* **Non implémentée à ce jour** (Howler.js envisagé, jamais installé)
+* Si ajoutée : démarrage progressif, volume modéré, toujours optionnelle
 
 ### Animations
 
@@ -191,8 +218,9 @@ Les personnages accompagnent, ils ne dominent jamais.
 ## 8. Contraintes techniques
 
 * Mobile-first obligatoire
-* Front-end only
-* Pas de backend requis
+* Front-end Next.js — pas de backend applicatif
+* **Exception** : la roulette à cadeaux s'appuie sur **Firebase Firestore** (clés dans `.env.local`), avec fallback localStorage — jamais bloquant pour le reste du site
+* Scroll fluide via **Lenis** (le scroll snap initial a été abandonné)
 * Pas d’accès direct aux sections sans le verrou
 * Code clair, structuré, maintenable
 

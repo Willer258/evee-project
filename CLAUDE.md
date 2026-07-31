@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Projet
 
 **EVEE — Valentine Chibi Experience**
-Site one-page immersif, mobile-first, privé. Cadeau émotionnel interactif pour une seule personne (Evee). Français uniquement. Aucun objectif SEO, public ou marketing.
+Site one-page immersif, mobile-first, privé. Cadeau émotionnel interactif pour une seule personne (Evee / « Eve »). Français uniquement. Aucun objectif SEO, public ou marketing.
 
 ### Règle d'or
 
@@ -16,7 +16,7 @@ Site one-page immersif, mobile-first, privé. Cadeau émotionnel interactif pour
 ## Commandes
 
 ```bash
-npm run dev          # Serveur dev (localhost:3000, Turbopack)
+npm run dev          # Serveur dev (localhost:3000)
 npm run build        # Build production
 npm start            # Serveur production
 npm run lint         # ESLint (Core Web Vitals + TypeScript)
@@ -30,61 +30,117 @@ Aucun framework de test configuré.
 
 ## Stack technique
 
-| Couche        | Technologie                                    |
-| ------------- | ---------------------------------------------- |
-| Framework     | Next.js 16 (App Router) + React 19 + TS 5      |
-| Styles        | Tailwind CSS 4 + shadcn/ui (New York, Lucide)  |
-| Animations    | GSAP 3 + @gsap/react + ScrollTrigger           |
-| Audio         | Howler.js (à installer quand nécessaire)       |
-| Alias         | `@/*` → `./src/*`                              |
+| Couche        | Technologie                                        |
+| ------------- | -------------------------------------------------- |
+| Framework     | Next.js 16 (App Router) + React 19 + TS 5          |
+| Styles        | Tailwind CSS 4 + shadcn/ui (New York, Lucide)      |
+| Animations    | GSAP 3 + @gsap/react + ScrollTrigger               |
+| Scroll        | **Lenis** (smooth scroll piloté par le ticker GSAP)|
+| Données       | **Firebase Firestore** (roulette à cadeaux uniquement) |
+| Audio         | Non implémenté (Howler.js envisagé, jamais installé) |
+| Alias         | `@/*` → `./src/*`                                  |
+
+### Variables d'environnement (`.env.local`, non versionné)
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+NEXT_PUBLIC_FIREBASE_PROJECT_ID
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+NEXT_PUBLIC_FIREBASE_APP_ID
+```
+
+Sans ces clés, la roulette bascule en mode dégradé (fallback `localStorage`), le reste du site fonctionne normalement.
 
 ---
 
-## Architecture cible
+## Architecture réelle
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx              # Layout racine (fonts, metadata, lang="fr")
-│   ├── page.tsx                # Orchestrateur : verrou → sections
-│   └── globals.css             # Tailwind + shadcn theme + animations custom
+│   ├── layout.tsx              # Fonts (next/font), metadata "Pour toi", lang="fr"
+│   ├── page.tsx                # Orchestrateur : loading → lock → content + roulette
+│   └── globals.css             # Tailwind + thème shadcn + palette + animations custom
 ├── components/
-│   ├── ui/                     # shadcn/ui (ne jamais éditer à la main)
-│   ├── lock/                   # Système de verrou narratif (date 03/08/2025)
-│   ├── sections/               # Les 6 sections plein écran
-│   │   ├── EntreeSection.tsx
-│   │   ├── DecouverteSection.tsx
-│   │   ├── SouvenirsSection.tsx
-│   │   ├── ConnexionSection.tsx
-│   │   ├── IntimiteSection.tsx
-│   │   └── ScellementSection.tsx
-│   └── shared/                 # Composants réutilisables (transitions, overlays)
+│   ├── ui/
+│   │   └── circular-gallery.tsx   # Viewer circulaire (utilisé par Souvenirs)
+│   ├── lock/
+│   │   └── DateLock.tsx        # Verrou narratif (date 03/08/2025)
+│   ├── sections/               # 7 sections plein écran (ordre d'affichage)
+│   │   ├── EntreeSection.tsx       # Colonnes de photos défilantes (entree/)
+│   │   ├── DecouverteSection.tsx   # Narration poétique + sphères photos flottantes (narrative/)
+│   │   ├── SouvenirsSection.tsx    # Rangées horizontales défilantes + CircularGallery (souvenirs/)
+│   │   ├── ConnexionSection.tsx    # Chapitres mois par mois (timeline gauche/droite)
+│   │   ├── IntimiteSection.tsx     # Lettre d'amour (tableau LETTRE)
+│   │   ├── ScellementSection.tsx   # Ancrage final (orbes)
+│   │   └── VideoFinaleSection.tsx  # Carrousel de 10 vidéos (6 s chacune)
+│   └── roulette/               # Roulette à cadeaux (overlay flottant, hors scroll)
+│       ├── GiftBubble.tsx      # Bulle flottante d'ouverture
+│       ├── RouletteModal.tsx   # Modal principal (phases idle → spinning → reveal → wish/claimed)
+│       ├── GiftBox.tsx / GiftReveal.tsx / GiftIcons.tsx / Confetti.tsx
+│       └── WishInput.tsx       # Saisie du vœu → lien WhatsApp (⚠ PHONE_NUMBER placeholder)
 ├── hooks/
-│   └── use-gsap-scroll.ts      # Hook wrapper GSAP ScrollTrigger
+│   ├── useGiftRoulette.ts      # État roulette (Firestore + fallback offline)
+│   └── useGifts.ts             # ⚠ CODE MORT (wishlist non branchée)
 ├── lib/
+│   ├── firebase.ts             # Init Firebase + export db (Firestore)
+│   ├── gift-roulette.ts        # Logique roulette : claims, poids, cooldowns, WhatsApp
+│   ├── gifts.ts                # ⚠ CODE MORT (CRUD wishlist, jamais importé)
 │   └── utils.ts                # cn() — clsx + tailwind-merge
-└── types/                      # Types globaux
+└── types/
+    └── gifts.ts                # GiftType, GiftState, RoulettePhase + GIFT_TYPES (8 cadeaux)
+
+public/
+├── images/
+│   ├── entree/       # 24 photos (EntreeSection)
+│   ├── souvenirs/    # 28 photos (SouvenirsSection)
+│   ├── narrative/    # 43 fichiers jpg + mp4 (DecouverteSection, ConnexionSection)
+│   ├── gifts/        # 8 PNG (un par cadeau de la roulette)
+│   └── cloud.png
+└── videos/           # finale-1.mp4 → finale-10.mp4 (VideoFinaleSection)
 ```
+
+`lib/gifts.ts` + `hooks/useGifts.ts` sont un reliquat d'une wishlist Firestore jamais branchée (aucun import dans l'app). À supprimer ou brancher, ne pas s'en inspirer.
 
 ---
 
 ## Flux de l'expérience
 
 ```
-Verrou (date 03/08/2025)
-  │  validation continue, pas de bouton
-  │  reconnaissance douce → "Oui. C'est ce jour-là."
+Phase 'loading'
+  │  préchargement de ~83 images (entree + souvenirs + narrative)
+  │  loader : orbes GSAP + barre de progression + %
   ▼
-6 sections plein écran (scroll snap)
-  1. Entrée      → tableau de photos, début musique
-  2. Découverte  → qualités d'Evee, texte progressif
-  3. Souvenirs   → galerie photo chronologique
-  4. Connexion   → continuité du lien (timeline)
-  5. Intimité    → lettre d'amour, calligraphie
-  6. Scellement  → ancrage final
+Phase 'lock' — DateLock (03/08/2025)
+  │  3 champs J/M/A, validation continue, pas de bouton
+  │  reconnaissance douce → "Oui. C'est ce jour-là."
+  │  rideau de transition (curtain fade)
+  ▼
+Phase 'content' — 7 sections + roulette flottante
+  1. Entrée       → colonnes de photos, immersion
+  2. Découverte   → narration poétique, sphères photos
+  3. Souvenirs    → rangées défilantes + viewer circulaire
+  4. Connexion    → chapitres mois par mois (Août → …)
+  5. Intimité     → lettre d'amour
+  6. Scellement   → ancrage final
+  7. Vidéo finale → carrousel de 10 vidéos
+  + GiftBubble/RouletteModal en overlay (si pas de cooldown)
 ```
 
-Les sections ne se montent qu'après déverrouillage.
+Les sections sont toutes lazy-loaded (`dynamic(..., { ssr: false })`) et ne se montent qu'après déverrouillage. Les trois phases sont gérées par un state `phase` dans `page.tsx`.
+
+---
+
+## Roulette à cadeaux (Firestore)
+
+- **8 cadeaux** définis dans `types/gifts.ts` (`GIFT_TYPES`) : dessert, dîner, cinéma, poème, massage, bisou, gâterie, vœu — chacun avec `maxClaims` (null = infini), couleur OKLCh, image `public/images/gifts/`.
+- **Tirage pondéré** : `GIFT_WEIGHTS` dans `lib/gift-roulette.ts` (bisou 28 → vœu 2).
+- **1 spin par semaine**, réinitialisé chaque **lundi 00:00** — état dans Firestore (`app_state/spin_state`) + fallback `localStorage` (`evee_last_spin`).
+- **Claims atomiques** via `runTransaction` sur la collection `gift_states` (un doc par cadeau).
+- **Vœu** : cooldown propre de 7 jours + envoi via lien WhatsApp (`WishInput.tsx` — ⚠ `PHONE_NUMBER = '33600000000'` est un placeholder à remplacer).
+- Firestore indisponible → mode `offline` (localStorage seul), jamais bloquant.
 
 ---
 
@@ -103,7 +159,7 @@ Great Vibes uniquement pour les moments forts (reconnaissance verrou, signature 
 
 ### Palette de couleurs (OKLCh)
 
-Palette intime, chaude, onirique. Définie en variables CSS dans `globals.css`.
+Palette intime, chaude, onirique. Définie en variables CSS dans `globals.css` et mappée sur le thème shadcn (`--primary` = rose-deep, `--background` = cream…).
 
 | Token              | Rôle                     | OKLCh                          | Hex approx  |
 | ------------------ | ------------------------ | ------------------------------ | ----------- |
@@ -179,21 +235,18 @@ export function Section() {
 - `will-change: transform` sur les éléments animés pour le GPU
 - Maximum 1 animation émotionnelle forte par section, suivie d'un temps de respiration
 
-### Scroll Snap + ScrollTrigger
+### Scroll : Lenis + ScrollTrigger
 
-```css
-.scroll-container {
-  height: 100dvh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-}
+Le scroll est géré par **Lenis** (instancié dans `page.tsx` à l'entrée en phase `content`), synchronisé avec ScrollTrigger :
 
-.section-snap {
-  height: 100dvh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
+```tsx
+const lenis = new Lenis({ duration: 1.4, smoothWheel: true, touchMultiplier: 1.5 });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
 ```
+
+⚠ Les classes `.scroll-container` / `.section-snap` / `.section-no-snap` de `globals.css` sont un **vestige** de l'approche scroll-snap initiale : aucun conteneur snap n'est monté (le body scrolle via Lenis), elles ne servent aujourd'hui qu'au layout `100dvh`. Ne pas réintroduire de scroll-snap sans retirer Lenis.
 
 Utiliser `100dvh` (pas `100vh`) pour le support iOS correct.
 
@@ -219,7 +272,7 @@ animate-heartbeat     → battement de cœur subtil
 animate-fade-in-up    → entrée par le bas avec fondu
 ```
 
-Définir via `@keyframes` dans `globals.css` et exposer via classes Tailwind dans `@theme`.
+Définies via `@keyframes` dans `globals.css` et exposées via classes Tailwind dans `@theme`.
 
 ---
 
@@ -229,22 +282,28 @@ Définir via `@keyframes` dans `globals.css` et exposer via classes Tailwind dan
 
 - `'use client'` obligatoire pour tout composant utilisant GSAP, hooks navigateur, ou interactivité
 - Sections = composants autonomes dans `src/components/sections/`
-- Chaque section reçoit un `ref` pour le scope GSAP
+- Chaque section porte son propre `ref` container pour le scope GSAP
 - Les sections sont lazy-loaded : `dynamic(() => import(...), { ssr: false })`
 
 ### Contenu personnalisable
 
-| Donnée            | Emplacement                        |
-| ----------------- | ---------------------------------- |
-| Date du verrou    | `lock/` composant (03/08/2025)     |
-| Qualités d'Evee   | `DecouverteSection.tsx` (tableau)  |
-| Photos            | `public/images/` + ref dans Souvenirs |
-| Lettre d'amour    | `IntimiteSection.tsx`              |
-| Musique           | `public/audio/`                    |
+| Donnée                  | Emplacement réel                                      |
+| ----------------------- | ----------------------------------------------------- |
+| Date du verrou          | `lock/DateLock.tsx` (`TARGET_DAY/MONTH/YEAR` = 03/08/2025) |
+| Narration Découverte    | `DecouverteSection.tsx` (lignes + sphères photos)     |
+| Chapitres timeline      | `ConnexionSection.tsx` (tableau `CHAPITRES`)          |
+| Lettre d'amour          | `IntimiteSection.tsx` (tableau `LETTRE`)              |
+| Cadeaux roulette        | `types/gifts.ts` (`GIFT_TYPES`) + poids dans `lib/gift-roulette.ts` |
+| Numéro WhatsApp (vœu)   | `roulette/WishInput.tsx` (`PHONE_NUMBER` — placeholder à remplacer) |
+| Photos                  | `public/images/{entree,souvenirs,narrative,gifts}/`   |
+| Vidéos finale           | `public/videos/finale-*.mp4` (liste dans `VideoFinaleSection.tsx`) |
+| Images préchargées      | `page.tsx` (`PRELOAD_IMAGES` — à synchroniser avec les dossiers) |
+
+⚠ `PRELOAD_IMAGES` dans `page.tsx` liste explicitement les fichiers : toute photo ajoutée/renommée doit y être répercutée.
 
 ### Images
 
-- Photos dans `public/images/`, nommées descriptif (`nous-plage-01.jpg`)
+- Photos dans `public/images/<section>/`, nommées par convention (`entree-01.jpg`, `souvenir-01.jpg`, `01a.jpg` pour narrative)
 - Optimiser avant commit (max 500KB par photo)
 - Utiliser `next/image` avec `sizes` et `placeholder="blur"` quand possible
 
