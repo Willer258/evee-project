@@ -60,6 +60,7 @@ const ROWS = [
       { id: 'd5', w: 190, src: '/images/souvenirs/souvenir-26.jpg' },
       { id: 'd6', w: 260, src: '/images/souvenirs/souvenir-27.jpg' },
       { id: 'd7', w: 180, src: '/images/souvenirs/souvenir-28.jpg' },
+      { id: 'd8', w: 210, src: '/images/souvenirs/souvenir-29.jpg' },
     ],
   },
 ];
@@ -151,13 +152,30 @@ function GalleryViewer({
       className="fixed inset-0 z-50 flex items-center justify-center px-4 py-10"
       onClick={handleClose}
     >
-      {/* Backdrop sombre flouté */}
-      <div className="absolute inset-0 bg-charcoal/75 backdrop-blur-md" />
+      {/* Voile rosé profond — le monde du site, pas une lightbox */}
+      <div
+        className="absolute inset-0 backdrop-blur-md"
+        style={{ background: 'oklch(0.28 0.04 340 / 0.92)' }}
+      />
+
+      {/* Orbes oniriques */}
+      <div className="orb orb-rose w-[420px] h-[420px] top-[8%] -left-28 opacity-25" />
+      <div className="orb orb-gold w-[300px] h-[300px] bottom-[12%] -right-20 opacity-20" />
+      <div className="orb orb-mist w-[260px] h-[260px] top-[55%] left-[6%] opacity-15" />
+
+      {/* Vignette douce */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 70% 60% at 50% 45%, transparent 0%, oklch(0.20 0.03 320 / 0.45) 100%)',
+        }}
+      />
+      <div className="grain absolute inset-0 pointer-events-none" />
 
       {/* Panneau carrousel */}
       <div
         ref={panelRef}
-        className="relative z-10 flex flex-col items-center gap-6 w-full max-w-2xl"
+        className="relative z-10 flex flex-col items-center gap-5 w-full max-w-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <CircularGallery
@@ -166,13 +184,16 @@ function GalleryViewer({
           autoplay
           intervalMs={5000}
         />
+        <p className="font-script text-2xl md:text-3xl text-warm-white/55 drop-shadow-sm">
+          Le temps suspendu
+        </p>
       </div>
 
       {/* Close button */}
       <button
         onClick={handleClose}
         aria-label="Fermer la galerie"
-        className="absolute top-4 right-4 z-20 w-11 h-11 rounded-full flex items-center justify-center text-warm-white/65 hover:text-warm-white transition-colors"
+        className="absolute top-4 right-4 z-20 w-11 h-11 rounded-full flex items-center justify-center text-warm-white/65 hover:text-warm-white active:scale-95 transition-all duration-200"
         style={{ background: 'oklch(0.25 0.01 270 / 0.45)', backdropFilter: 'blur(8px)' }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,6 +211,9 @@ function GalleryViewer({
 export default function SouvenirsSection() {
   const container = useRef<HTMLElement>(null);
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+  const marqueeCleanup = useRef<(() => void) | null>(null);
+
+  useEffect(() => () => marqueeCleanup.current?.(), []);
 
   const handleCardClick = useCallback((cardId: string) => {
     const idx = ALL_CARDS.findIndex((c) => c.id === cardId);
@@ -225,6 +249,7 @@ export default function SouvenirsSection() {
         });
       }
 
+      const marqueeTweens: gsap.core.Tween[] = [];
       el.querySelectorAll<HTMLElement>('.masonry-row').forEach((row) => {
         const inner = row.querySelector<HTMLElement>('.masonry-inner');
         if (!inner) return;
@@ -235,12 +260,31 @@ export default function SouvenirsSection() {
 
         if (direction === 'left') {
           gsap.set(inner, { x: 0 });
-          gsap.to(inner, { x: -totalWidth, duration: speed, ease: 'none', repeat: -1 });
+          marqueeTweens.push(gsap.to(inner, { x: -totalWidth, duration: speed, ease: 'none', repeat: -1 }));
         } else {
           gsap.set(inner, { x: -totalWidth });
-          gsap.to(inner, { x: 0, duration: speed, ease: 'none', repeat: -1 });
+          marqueeTweens.push(gsap.to(inner, { x: 0, duration: speed, ease: 'none', repeat: -1 }));
         }
       });
+
+      // Les rangées répondent à la vitesse du scroll — accélèrent, puis se calment
+      let marqueeBoost = 1;
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          marqueeBoost = gsap.utils.clamp(1, 3.2, 1 + Math.abs(self.getVelocity()) / 1200);
+        },
+      });
+      const smoothMarquee = () => {
+        marqueeTweens.forEach((t) => {
+          t.timeScale(gsap.utils.interpolate(t.timeScale(), marqueeBoost, 0.08));
+        });
+        marqueeBoost += (1 - marqueeBoost) * 0.04;
+      };
+      gsap.ticker.add(smoothMarquee);
+      marqueeCleanup.current = () => gsap.ticker.remove(smoothMarquee);
 
       const grid = el.querySelector('.masonry-grid');
       if (grid) {
@@ -315,7 +359,7 @@ export default function SouvenirsSection() {
           <button
             type="button"
             onClick={handleVoirPlus}
-            className="souvenirs-subtitle mt-8 font-sans text-sm text-charcoal/60 font-light tracking-wide px-6 py-2.5 rounded-full transition-all duration-300 hover:text-charcoal/80 hover:scale-105 inline-block pointer-events-auto cursor-pointer"
+            className="souvenirs-subtitle mt-8 font-sans text-sm text-charcoal/60 font-light tracking-wide px-6 py-2.5 rounded-full transition-all duration-300 hover:text-charcoal/80 hover:scale-105 active:scale-[0.97] inline-block pointer-events-auto cursor-pointer"
             style={{
               background: 'oklch(0.97 0.01 80 / 0.5)',
               backdropFilter: 'blur(12px)',

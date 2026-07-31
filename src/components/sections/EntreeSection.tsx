@@ -4,8 +4,9 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const COLUMN_CARDS = [
   [
@@ -124,7 +125,17 @@ export default function EntreeSection() {
     });
 
     // ── Orchestrated hero entrance ──
-    const tl = gsap.timeline({ delay: 0.3 });
+    // Titre découpé en lettres — chaque caractère émerge du nuage
+    const titleEl = container.current?.querySelector('.hero-title');
+    const split = titleEl ? new SplitText(titleEl, { type: 'chars' }) : null;
+    if (split) {
+      gsap.set(split.chars, { opacity: 0, y: 26, rotateX: -55, transformPerspective: 600 });
+    }
+
+    const tl = gsap.timeline({
+      delay: 0.3,
+      onComplete: () => split?.revert(),
+    });
 
     // 1. Orbs fade in from nothing
     tl.from('.hero-orb', {
@@ -145,17 +156,30 @@ export default function EntreeSection() {
         from: 'center',
       },
       ease: 'back.out(1.4)',
-    }, '-=1.2')
+    }, '-=1.2');
 
-    // 3. Title emerges from within the cloud
-    .from('.hero-title', {
-      opacity: 0,
-      y: 30,
-      scale: 0.9,
-      filter: 'blur(8px)',
-      duration: 1.2,
-      ease: 'power3.out',
-    }, '-=0.4')
+    // 3. Title emerges from within the cloud — letter by letter
+    if (split) {
+      tl.to(split.chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 0.9,
+        stagger: 0.045,
+        ease: 'power3.out',
+      }, '-=0.4');
+    } else {
+      tl.from('.hero-title', {
+        opacity: 0,
+        y: 30,
+        scale: 0.9,
+        filter: 'blur(8px)',
+        duration: 1.2,
+        ease: 'power3.out',
+      }, '-=0.4');
+    }
+
+    tl
 
     // 4. Gold divider stretches
     .from('.hero-divider', {
@@ -206,6 +230,26 @@ export default function EntreeSection() {
       });
     });
 
+    // ── Mur réactif au pointeur (desktop uniquement, hors reduced-motion) ──
+    let removeMove: (() => void) | undefined;
+    if (
+      window.matchMedia('(pointer: fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      const wall = container.current?.querySelector('.entree-wall');
+      if (wall) {
+        const qx = gsap.quickTo(wall, 'x', { duration: 1.4, ease: 'power3.out' });
+        const qy = gsap.quickTo(wall, 'y', { duration: 1.4, ease: 'power3.out' });
+        const onMove = (e: MouseEvent) => {
+          qx((e.clientX / window.innerWidth - 0.5) * -16);
+          qy((e.clientY / window.innerHeight - 0.5) * -12);
+        };
+        window.addEventListener('mousemove', onMove);
+        removeMove = () => window.removeEventListener('mousemove', onMove);
+      }
+    }
+
+    return () => removeMove?.();
   }, { scope: container });
 
   return (
@@ -224,7 +268,7 @@ export default function EntreeSection() {
 
       {/* ── Layer 2: Masonry wall — DIAGONAL, full bleed ── */}
       <div
-        className="absolute inset-0 overflow-hidden"
+        className="entree-wall absolute inset-0 overflow-hidden"
         style={{ transform: 'rotate(-12deg) scale(1.35)', transformOrigin: 'center center' }}
       >
         <div className="flex gap-3 w-full h-full px-1">

@@ -97,7 +97,7 @@ export default function ScellementSection() {
             aria-hidden="true"
           />
 
-          {/* Wrapper flottant + drop-shadow qui épouse le cœur */}
+          {/* Wrapper flottant + drop-shadow qui épouse le cœur — et il bat */}
           <div
             className="relative w-full h-full animate-float"
             style={{
@@ -105,6 +105,7 @@ export default function ScellementSection() {
                 'drop-shadow(0 18px 36px oklch(0.55 0.15 10 / 0.32)) drop-shadow(0 6px 14px oklch(0.55 0.15 10 / 0.22))',
             }}
           >
+            <div className="relative w-full h-full animate-heartbeat">
             {/* Liseré doré : cœur légèrement plus grand en arrière-plan */}
             <div
               className="absolute -inset-[2px]"
@@ -148,6 +149,7 @@ export default function ScellementSection() {
                 }}
                 aria-hidden="true"
               />
+            </div>
             </div>
           </div>
         </div>

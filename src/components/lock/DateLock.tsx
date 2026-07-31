@@ -111,7 +111,7 @@ export default function DateLock({ onUnlock }: DateLockProps) {
       <div className="lock-orb orb orb-mist w-[350px] h-[350px] bottom-[30%] left-[15%] animate-float" style={{ animationDelay: '-3s' }} />
 
       {/* Panneau glass central */}
-      <div className="lock-glass-panel glass rounded-3xl p-8 md:p-12 mx-4 max-w-sm w-full relative z-10">
+      <div className="lock-glass-panel glass border-glow rounded-3xl p-8 md:p-12 mx-4 max-w-sm w-full relative z-10">
         <div className="flex flex-col items-center gap-7 text-center">
           <h1 className="lock-title font-serif text-3xl md:text-4xl font-light tracking-wide text-charcoal leading-tight">
             Un souvenir<br />nous lie
@@ -132,7 +132,9 @@ export default function DateLock({ onUnlock }: DateLockProps) {
                 placeholder="JJ"
                 value={day}
                 onChange={(e) => handleInput(e.target.value, setDay, 2, monthRef)}
-                className="w-14 h-14 md:w-16 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300"
+                className={`w-14 h-14 md:w-16 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300 ${
+                  day.length === 2 ? 'ring-1 ring-gold-soft/60 bg-warm-white/70' : ''
+                }`}
               />
               <span className="text-xl text-charcoal/20 font-light">/</span>
               <input
@@ -143,7 +145,9 @@ export default function DateLock({ onUnlock }: DateLockProps) {
                 placeholder="MM"
                 value={month}
                 onChange={(e) => handleInput(e.target.value, setMonth, 2, yearRef)}
-                className="w-14 h-14 md:w-16 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300"
+                className={`w-14 h-14 md:w-16 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300 ${
+                  month.length === 2 ? 'ring-1 ring-gold-soft/60 bg-warm-white/70' : ''
+                }`}
               />
               <span className="text-xl text-charcoal/20 font-light">/</span>
               <input
@@ -154,7 +158,9 @@ export default function DateLock({ onUnlock }: DateLockProps) {
                 placeholder="AAAA"
                 value={year}
                 onChange={(e) => handleInput(e.target.value, setYear, 4)}
-                className="w-20 h-14 md:w-24 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300"
+                className={`w-20 h-14 md:w-24 md:h-16 text-center text-xl md:text-2xl font-serif font-light rounded-xl bg-warm-white/50 border border-white/20 text-charcoal placeholder:text-charcoal/20 focus:outline-none focus:ring-2 focus:ring-rose-soft/40 focus:bg-warm-white/70 transition-all duration-300 ${
+                  year.length === 4 ? 'ring-1 ring-gold-soft/60 bg-warm-white/70' : ''
+                }`}
               />
             </div>
           </div>

@@ -54,7 +54,7 @@ export default function GiftBubble({ onClick }: GiftBubbleProps) {
       <button
         ref={btnRef}
         onClick={onClick}
-        className="gift-bubble-btn w-12 h-12 glass-rose rounded-full flex items-center justify-center text-xl animate-pulse-glow cursor-pointer"
+        className="gift-bubble-btn w-12 h-12 glass-rose rounded-full flex items-center justify-center text-xl animate-pulse-glow cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200"
         style={{ transform: 'scale(0)' }}
         aria-label="Ouvrir la roulette de cadeaux"
       >

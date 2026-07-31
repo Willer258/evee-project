@@ -24,12 +24,12 @@ interface CircularGalleryProps {
   initialIndex?: number;
 }
 
-/* Responsive gap between active image and the two neighbours */
+/* Responsive gap between active image and the two neighbours — based on viewport width */
 function calculateGap(width: number) {
   const minWidth = 320;
-  const maxWidth = 800;
-  const minGap = 38;
-  const maxGap = 80;
+  const maxWidth = 1100;
+  const minGap = 64;
+  const maxGap = 210;
   if (width <= minWidth) return minGap;
   if (width >= maxWidth) return maxGap;
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
@@ -53,7 +53,7 @@ export function CircularGallery({
   /* Responsive width tracking */
   useEffect(() => {
     function handleResize() {
-      if (stageRef.current) setContainerWidth(stageRef.current.offsetWidth);
+      setContainerWidth(window.innerWidth);
     }
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -114,12 +114,12 @@ export function CircularGallery({
   /* Per-image transform (active centre + left + right + hidden rest) */
   function getImageStyle(index: number): CSSProperties {
     const gap = calculateGap(containerWidth);
-    const stickUp = gap * 0.55;
+    const stickUp = gap * 0.35;
     const isActive = index === activeIndex;
     const isLeft = (activeIndex - 1 + length) % length === index;
     const isRight = (activeIndex + 1) % length === index;
     const transition =
-      'transform 0.85s cubic-bezier(.4,2,.3,1), opacity 0.7s ease';
+      'transform 0.9s cubic-bezier(.32,1.3,.28,1), opacity 0.7s ease, filter 0.7s ease';
 
     if (isActive) {
       return {
@@ -127,24 +127,27 @@ export function CircularGallery({
         opacity: 1,
         pointerEvents: 'auto',
         transform: 'translate3d(0,0,0) scale(1) rotateY(0deg)',
+        filter: 'none',
         transition,
       };
     }
     if (isLeft) {
       return {
         zIndex: 2,
-        opacity: 0.92,
+        opacity: 0.45,
         pointerEvents: 'auto',
-        transform: `translate3d(-${gap}px, -${stickUp}px, 0) scale(0.86) rotateY(18deg)`,
+        transform: `translate3d(-${gap}px, -${stickUp}px, 0) scale(0.8) rotateY(24deg)`,
+        filter: 'blur(1.5px)',
         transition,
       };
     }
     if (isRight) {
       return {
         zIndex: 2,
-        opacity: 0.92,
+        opacity: 0.45,
         pointerEvents: 'auto',
-        transform: `translate3d(${gap}px, -${stickUp}px, 0) scale(0.86) rotateY(-18deg)`,
+        transform: `translate3d(${gap}px, -${stickUp}px, 0) scale(0.8) rotateY(-24deg)`,
+        filter: 'blur(1.5px)',
         transition,
       };
     }
@@ -153,6 +156,7 @@ export function CircularGallery({
       opacity: 0,
       pointerEvents: 'none',
       transform: 'translate3d(0,0,0) scale(0.78) rotateY(0deg)',
+      filter: 'blur(3px)',
       transition,
     };
   }
@@ -168,6 +172,17 @@ export function CircularGallery({
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
+        {/* Halo doré pulsant derrière la carte active */}
+        <div
+          aria-hidden="true"
+          className="absolute -inset-10 animate-pulse-glow pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 55% at 50% 50%, oklch(0.80 0.10 85 / 0.30) 0%, oklch(0.75 0.08 10 / 0.14) 50%, transparent 75%)',
+            filter: 'blur(24px)',
+            zIndex: 0,
+          }}
+        />
         {images.map((img, index) => (
           <button
             key={index}
@@ -180,8 +195,8 @@ export function CircularGallery({
             style={{
               ...getImageStyle(index),
               boxShadow:
-                '0 14px 40px oklch(0.55 0.15 10 / 0.18), 0 4px 14px oklch(0.55 0.15 10 / 0.12)',
-              border: '1px solid oklch(1 0 0 / 0.25)',
+                '0 22px 60px oklch(0.15 0.04 320 / 0.50), 0 6px 18px oklch(0.15 0.04 320 / 0.35)',
+              border: '1px solid oklch(1 0 0 / 0.30)',
             }}
           >
             <img
@@ -201,14 +216,19 @@ export function CircularGallery({
           type="button"
           onClick={handlePrev}
           aria-label="Souvenir précédent"
-          className="glass-rose w-11 h-11 rounded-full flex items-center justify-center text-charcoal/55 hover:text-charcoal transition-colors"
+          className="w-11 h-11 rounded-full flex items-center justify-center text-warm-white/70 hover:text-warm-white active:scale-95 transition-all duration-200"
+          style={{
+            background: 'oklch(1 0 0 / 0.10)',
+            border: '1px solid oklch(1 0 0 / 0.18)',
+            backdropFilter: 'blur(8px)',
+          }}
         >
           <ChevronLeft size={20} strokeWidth={1.5} />
         </button>
 
-        <span className="font-sans text-xs tracking-wider text-charcoal/45 tabular-nums min-w-[3.5rem] text-center">
+        <span className="font-sans text-xs tracking-wider text-warm-white/65 tabular-nums min-w-[3.5rem] text-center">
           {String(activeIndex + 1).padStart(2, '0')}
-          <span className="mx-1 text-charcoal/25">/</span>
+          <span className="mx-1 text-warm-white/30">/</span>
           {String(length).padStart(2, '0')}
         </span>
 
@@ -216,7 +236,12 @@ export function CircularGallery({
           type="button"
           onClick={handleNext}
           aria-label="Souvenir suivant"
-          className="glass-rose w-11 h-11 rounded-full flex items-center justify-center text-charcoal/55 hover:text-charcoal transition-colors"
+          className="w-11 h-11 rounded-full flex items-center justify-center text-warm-white/70 hover:text-warm-white active:scale-95 transition-all duration-200"
+          style={{
+            background: 'oklch(1 0 0 / 0.10)',
+            border: '1px solid oklch(1 0 0 / 0.18)',
+            backdropFilter: 'blur(8px)',
+          }}
         >
           <ChevronRight size={20} strokeWidth={1.5} />
         </button>

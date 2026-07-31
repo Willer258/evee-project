@@ -26,6 +26,7 @@ const sans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Pour toi",
   description: "Un espace rien que pour nous.",
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
@@ -33,6 +34,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
+  themeColor: "#faf6f0",
 };
 
 export default function RootLayout({

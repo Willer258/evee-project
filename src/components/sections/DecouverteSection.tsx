@@ -62,23 +62,25 @@ const VERSES: Verse[] = [
     accent: 'title',
     lines: [
       { text: 'Eve, depuis que tu es là...', style: 'serif' },
-      { text: 'mon quotidien a pris un goût qu\u2019il n\u2019avait pas.', style: 'serif' },
-      { text: 'Tes repas, tes gestes, ta voix \u2014', style: 'serif' },
+      { text: 'mon quotidien a pris un goût qu’il n’avait pas.', style: 'serif' },
+      { text: 'Tes repas, tes gestes, ta voix —', style: 'serif' },
       { text: 'loin des miens, tu as posé un chez-moi sans bruit, sans calcul.', style: 'serif' },
       { text: 'Ton corps contre le mien la nuit,', style: 'sans-italic' },
       { text: 'ta respiration qui apaise tout.', style: 'sans-italic' },
-      { text: 'Quand on dormait, j\u2019avais l\u2019illusion d\u2019un début de famille \u2014', style: 'sans-italic' },
+      { text: 'Quand on dormait, j’avais l’illusion d’un début de famille —', style: 'sans-italic' },
       { text: 'oui, oui, une part de moi imaginait déjà nos enfants. Vas-y, moque-toi.', style: 'sans-italic' },
-      { text: 'Je t\u2019aime, vraiment, sans moitié.', style: 'serif-bold' },
+      { text: 'Je t’aime, vraiment, sans moitié.', style: 'serif-bold' },
       { text: 'Je voulais construire, prendre le temps, durer.', style: 'serif' },
     ],
     photos: [
-      { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-20 h-20 md:w-40 md:h-40', top: '5%', left: '5%' },
-      { src: '/images/narrative/02b.jpg', alt: 'Douceur', size: 'w-24 h-24 md:w-44 md:h-44', top: '32%', left: '4%' },
-      { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-18 h-18 md:w-36 md:h-36', top: '8%', right: '5%' },
-      { src: '/images/narrative/04b.jpg', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', top: '40%', right: '4%' },
-      { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '20%', left: '6%' },
-      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '8%', right: '8%' },
+      // Diagonale de lecture : héro vidéo haut-gauche → vidéo bas-droite
+      { src: '/images/narrative/bulle-01.mp4', alt: 'Toi', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', left: '5%' },
+      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', right: '5%' },
+      { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', right: '7%' },
+      { src: '/images/narrative/02b.jpg', alt: 'Douceur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', left: '7%' },
+      { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
+      { src: '/images/narrative/04b.jpg', alt: 'Nous', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', left: '24%' },
+      { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', left: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '20%', right: '30%' },
@@ -87,29 +89,31 @@ const VERSES: Verse[] = [
       { size: 'water-sphere-xl', bottom: '5%', left: '2%' },
     ],
   },
-  // 2 — Ce qui est maintenant
+  // 2 — L'orage (traversé)
   {
-    chapter: { roman: 'II', title: 'Ce qui est maintenant' },
+    chapter: { roman: 'II', title: 'L’orage' },
     lines: [
-      { text: 'Mais il y avait des n\u0153uds.', style: 'sans-italic' },
-      { text: 'Ta façon de voir, tes peurs,', style: 'sans-italic' },
-      { text: 'ce que tu portais et que je n\u2019arrivais pas à dénouer.', style: 'sans-italic' },
-      { text: 'À la fin, ça blessait plus que ça rassurait \u2014', style: 'sans-italic' },
+      { text: 'Il y a eu des nœuds.', style: 'sans-italic' },
+      { text: 'Tes peurs, les miennes,', style: 'sans-italic' },
+      { text: 'ce qu’on portait chacun sans réussir à le dénouer.', style: 'sans-italic' },
+      { text: 'Un jour, ça a blessé plus que ça ne rassurait —', style: 'sans-italic' },
       { text: 'pas par ta faute, pas par la mienne.', style: 'serif' },
-      { text: 'Deux personnes qui s\u2019aiment ne se rejoignent pas toujours.', style: 'serif' },
-      { text: 'Cette semaine, on a posé les choses.', style: 'serif' },
-      { text: 'Pas un cri, pas un drame \u2014', style: 'serif' },
+      { text: 'Deux personnes qui s’aiment ne se rejoignent pas toujours.', style: 'serif' },
+      { text: 'Alors on a posé les choses.', style: 'serif' },
+      { text: 'Pas un cri, pas un drame —', style: 'serif' },
       { text: 'juste un pas en arrière, fatigué et tendre.', style: 'serif' },
-      { text: 'Et me voilà ce soir, seul à penser à toi sans le vouloir,', style: 'sans-italic' },
-      { text: 'dans un silence qui n\u2019a pas la même couleur.', style: 'sans-italic' },
+      { text: 'Et dans ce silence-là, une évidence :', style: 'sans-italic' },
+      { text: 'loin de toi, rien n’avait la même couleur.', style: 'sans-italic' },
     ],
     photos: [
-      { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-20 h-20 md:w-40 md:h-40', top: '6%', left: '6%' },
-      { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', right: '5%' },
-      { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-24 h-24 md:w-44 md:h-44', top: '38%', left: '5%' },
-      { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-20 h-20 md:w-40 md:h-40', top: '42%', right: '4%' },
-      { src: '/images/narrative/10a.jpg', alt: 'Distance', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '20%', left: '8%' },
-      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '8%', right: '6%' },
+      // Miroir du chapitre I — l'orage inverse la diagonale
+      { src: '/images/narrative/bulle-02.mp4', alt: 'Ta douceur', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', right: '5%' },
+      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', left: '5%' },
+      { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', left: '7%' },
+      { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', right: '7%' },
+      { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
+      { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
+      { src: '/images/narrative/10a.jpg', alt: 'Distance', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', right: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', top: '15%', left: '38%' },
@@ -118,27 +122,30 @@ const VERSES: Verse[] = [
       { size: 'water-sphere-lg', bottom: '5%', right: '2%' },
     ],
   },
-  // 3 — Ce qui reste, malgré tout
+  // 3 — Ce qu'on a choisi
   {
-    chapter: { roman: 'III', title: 'Ce qui reste, malgré tout' },
+    chapter: { roman: 'III', title: 'Ce qu’on a choisi' },
     lines: [
-      { text: 'L\u2019avenir, je ne le vois pas \u2014', style: 'serif' },
-      { text: 'pas pour nous, pas comme avant.', style: 'serif' },
-      { text: 'Je ne peux plus rien promettre.', style: 'serif' },
-      { text: 'Le reste ne m\u2019appartient pas.', style: 'serif' },
-      { text: 'Si un jour tu trouves le courage de choisir, et de l\u2019assumer,', style: 'sans-italic' },
-      { text: 'la suite pourrait s\u2019écrire encore.', style: 'serif' },
-      { text: 'Mais je ne crois pas que ce sera moi qui en profiterai.', style: 'sans-italic' },
-      { text: 'Eve, tu comptes encore.', style: 'script' },
-      { text: 'Et je t\u2019aime, encore.', style: 'script' },
+      { text: 'L’avenir, un temps, je ne le voyais plus.', style: 'serif' },
+      { text: 'Puis on est revenus l’un vers l’autre.', style: 'serif' },
+      { text: 'Pas pour effacer l’orage — pour ce qu’il nous a appris.', style: 'serif' },
+      { text: 'On s’est choisis une deuxième fois,', style: 'sans-italic' },
+      { text: 'et une deuxième fois, c’est les yeux ouverts.', style: 'sans-italic' },
+      { text: 'Un an déjà. Un an seulement.', style: 'serif' },
+      { text: 'Ce qui a plié n’a pas rompu.', style: 'serif-bold' },
+      { text: 'Eve, tu comptes, aujourd’hui plus qu’hier.', style: 'script' },
+      { text: 'Et je t’aime, encore et toujours.', style: 'script' },
     ],
     photos: [
-      { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-24 h-24 md:w-44 md:h-44', top: '6%', left: '5%' },
-      { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-18 h-18 md:w-36 md:h-36', top: '10%', right: '6%' },
-      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-24 h-24 md:w-48 md:h-48', top: '40%', right: '4%' },
-      { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-16 h-16 md:w-28 md:h-28', top: '45%', left: '6%' },
-      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '8%', left: '8%' },
-      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '10%', right: '8%' },
+      // Symétrie retrouvée — elle et lui face à face, le reste en écho
+      { src: '/images/narrative/bulle-03.mp4', alt: 'Toi qui racontes', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', left: '4%' },
+      { src: '/images/narrative/bulle-04.mp4', alt: 'Moi qui souris', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
+      { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', left: '18%' },
+      { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', right: '18%' },
+      { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', left: '20%' },
+      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', right: '20%' },
+      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', left: '6%' },
+      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', right: '6%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', variant: 'gold', top: '20%', right: '32%' },
@@ -354,6 +361,23 @@ export default function DecouverteSection() {
         yoyo: true,
         repeat: -1,
         delay: i * 0.06,
+      });
+    });
+
+    // Parallaxe de profondeur — les petites bulles dérivent plus que les grandes
+    el.querySelectorAll('.verse').forEach((verse) => {
+      verse.querySelectorAll<HTMLElement>('.photo-sphere').forEach((photo) => {
+        const depth = gsap.utils.clamp(0.25, 1, 90 / (photo.offsetWidth || 90));
+        gsap.to(photo, {
+          yPercent: -22 * depth,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: verse,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.4,
+          },
+        });
       });
     });
 

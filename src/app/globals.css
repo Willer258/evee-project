@@ -487,3 +487,58 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ──────────────────────────────────────────
+   Finitions — sélection, scrollbar, focus, texte
+   ────────────────────────────────────────── */
+
+/* Sélection de texte assortie au monde */
+::selection {
+  background: oklch(0.75 0.08 10 / 0.35);
+  color: var(--charcoal);
+}
+
+/* Scrollbar fine et teintée */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.75 0.08 10 / 0.5) transparent;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: oklch(0.75 0.08 10 / 0.45);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: oklch(0.75 0.08 10 / 0.65); }
+
+/* Focus clavier visible, doré, cohérent (les inputs gardent leur ring propre) */
+:where(button, a, [role='button']):focus-visible {
+  outline: 2px solid oklch(0.80 0.10 85 / 0.7);
+  outline-offset: 2px;
+}
+
+/* Curseur de saisie rosé */
+input, textarea { caret-color: var(--rose-deep); }
+
+/* Typographie — pas d'orphelins, titres équilibrés */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Dérive horizontale douce — hint de traversée */
+@keyframes drift-x {
+  0%, 100% { transform: translateX(0); opacity: 0.5; }
+  50% { transform: translateX(6px); opacity: 1; }
+}
+.animate-drift-x { animation: drift-x 2.2s ease-in-out infinite; }
+
+/* Respect de prefers-reduced-motion — le contenu reste, le mouvement décoratif s'efface */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-shimmer,
+  .animate-heartbeat,
+  .animate-fade-in-up,
+  .animate-drift-x {
+    animation: none !important;
+  }
+}

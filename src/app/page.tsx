@@ -24,7 +24,7 @@ const VideoFinaleSection = dynamic(() => import('@/components/sections/VideoFina
 const PRELOAD_IMAGES = [
   '/images/cloud.png',
   ...Array.from({ length: 24 }, (_, i) => `/images/entree/entree-${String(i + 1).padStart(2, '0')}.jpg`),
-  ...Array.from({ length: 28 }, (_, i) => `/images/souvenirs/souvenir-${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 29 }, (_, i) => `/images/souvenirs/souvenir-${String(i + 1).padStart(2, '0')}.jpg`),
   ...[
     '01a', '01b', '01c', '02a', '02b', '02c', '03a', '03b', '03c',
     '04b', '05a', '05b', '05c', '06a', '06b', '07a', '07b',
@@ -59,6 +59,7 @@ export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
+  const filRef = useRef<HTMLDivElement>(null);
 
   // ── Animations du loader ──
   useEffect(() => {
@@ -175,6 +176,15 @@ export default function Home() {
   useEffect(() => {
     if (phase !== 'content') return;
 
+    // prefers-reduced-motion : scroll natif, pas d'inertie
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const timeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+        setReady(true);
+      }, 300);
+      return () => clearTimeout(timeout);
+    }
+
     const lenis = new Lenis({
       duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -197,6 +207,50 @@ export default function Home() {
       lenis.destroy();
     };
   }, [phase]);
+
+  // ── Vie ambiante : orbes en parallaxe + fil de progression global ──
+  useEffect(() => {
+    if (!ready) return;
+    const tweens: gsap.core.Tween[] = [];
+
+    document.querySelectorAll<HTMLElement>('.orb').forEach((orb) => {
+      if (orb.closest('.chapitres-pin')) return; // la traversée pinnée gère les siennes
+      tweens.push(
+        gsap.to(orb, {
+          yPercent: gsap.utils.random(-18, 18),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: orb.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        }),
+      );
+    });
+
+    if (filRef.current) {
+      tweens.push(
+        gsap.to(filRef.current, {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: document.body,
+            start: 'top top',
+            end: 'max',
+            scrub: 0.6,
+          },
+        }),
+      );
+    }
+
+    return () => {
+      tweens.forEach((t) => {
+        t.scrollTrigger?.kill();
+        t.kill();
+      });
+    };
+  }, [ready]);
 
   return (
     <>
@@ -250,6 +304,20 @@ export default function Home() {
       {/* ── Contenu ── */}
       {phase === 'content' && (
         <>
+          {/* Fil doré de progression — l'histoire se remplit au fil du voyage */}
+          <div
+            className="fixed top-0 bottom-0 left-0 w-px z-40 pointer-events-none"
+            style={{ background: 'oklch(0.80 0.10 85 / 0.12)' }}
+          >
+            <div
+              ref={filRef}
+              className="w-full h-full origin-top"
+              style={{
+                background: 'linear-gradient(180deg, oklch(0.80 0.10 85 / 0.55), oklch(0.80 0.10 85 / 0.30))',
+                transform: 'scaleY(0)',
+              }}
+            />
+          </div>
           <div ref={wrapperRef} className="overflow-x-hidden">
             <EntreeSection />
             <DecouverteSection />

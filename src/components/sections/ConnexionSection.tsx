@@ -53,19 +53,43 @@ const CHAPITRES = [
   {
     mois: 'Mars',
     titre: 'Les premières fractures',
-    texte: 'Quelque chose s\u2019est mis à se troubler. Les questions sont arrivées sans prévenir. La douceur restait \u2014 le doute aussi.',
+    texte: 'Quelque chose s’est mis à se troubler. Les questions sont arrivées sans prévenir. La douceur restait — le doute aussi.',
     side: 'right' as const,
   },
   {
     mois: 'Avril',
     titre: 'Le retrait',
-    texte: 'On a posé les choses. Cette semaine, on s\u2019est séparés. Pas par colère \u2014 par épuisement de ne pas se rejoindre.',
+    texte: 'On a posé les choses. On s’est éloignés un temps. Pas par colère — par épuisement de ne pas se rejoindre.',
     side: 'left' as const,
   },
   {
-    mois: 'Et après\u2009…',
-    titre: 'Ce qui reste à écrire',
-    texte: 'L\u2019avenir, je ne le vois pas. Si un jour tu fais un choix, et si tu l\u2019assumes \u2014 peut-être que la suite s\u2019écrira encore. Sinon, ce qui a été a vraiment été.',
+    mois: 'Mai',
+    titre: 'Le retour',
+    texte: 'Le manque a parlé plus fort que les peurs. On s’est retrouvés — pas pour effacer, pour continuer. Cette fois, on savait ce qu’on choisissait.',
+    side: 'right' as const,
+  },
+  {
+    mois: 'Juin',
+    titre: 'La reconstruction',
+    texte: 'Réapprendre le quotidien, pierre par pierre. Les mêmes gestes qu’avant, posés plus doucement, plus sûrement.',
+    side: 'left' as const,
+  },
+  {
+    mois: 'Juillet',
+    titre: 'Les ajustements',
+    texte: 'Marcher à deux, ça s’apprend : parfois, on s’est marché sur les pieds. Alors on s’est parlé, pour ajuster le pas. Et une règle simple est restée — quand ça déborde, on demande de l’aide.',
+    side: 'right' as const,
+  },
+  {
+    mois: 'Août',
+    titre: 'Un an',
+    texte: 'Douze mois. Un orage traversé. Et nous, toujours là. Le 3 août n’est plus seulement le jour où tout a commencé — c’est le jour où tout continue.',
+    side: 'left' as const,
+  },
+  {
+    mois: 'Et après…',
+    titre: 'Les prochains chapitres',
+    texte: 'La suite n’est pas encore écrite — et c’est ce qui est beau. D’autres voyages, d’autres fous rires, des projets qui prennent racine. Cette fois, on écrit à deux mains.',
     side: 'right' as const,
   },
 ];
@@ -77,82 +101,80 @@ export default function ConnexionSection() {
     const el = container.current;
     if (!el) return;
 
-    // Titre + sous-titre
-    const title = el.querySelector('.chapitres-title');
-    const subtitle = el.querySelector('.chapitres-subtitle');
-    if (title) {
-      gsap.from(title, {
-        opacity: 0, y: 35, filter: 'blur(6px)', ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 75%', end: 'top 40%', scrub: 1 },
-      });
-    }
-    if (subtitle) {
-      gsap.from(subtitle, {
-        opacity: 0, y: 20, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 68%', end: 'top 35%', scrub: 1 },
-      });
-    }
+    const pinEl = el.querySelector<HTMLElement>('.chapitres-pin');
+    const track = el.querySelector<HTMLElement>('.chapitres-track');
+    if (!pinEl || !track) return;
 
-    // Fil doré qui se déroule
-    const fil = el.querySelector<HTMLElement>('.fil-dore');
-    if (fil) {
-      gsap.fromTo(fil,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el.querySelector('.chapitres-timeline'),
-            start: 'top 70%',
-            end: 'bottom 50%',
-            scrub: 1.2,
-          },
-        },
+    const distance = () => track.scrollWidth - window.innerWidth;
+
+    // ── Scroll vertical → traversée horizontale (pin + scrub) ──
+    // Une seule timeline scrubée : le track défile ET le fil se remplit en parallèle.
+    const traversee = gsap.timeline({
+      scrollTrigger: {
+        trigger: pinEl,
+        start: 'top top',
+        end: () => `+=${distance()}`,
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    traversee.to(track, { x: () => -distance(), ease: 'none' }, 0);
+
+    const filProgress = track.querySelector('.fil-progress');
+    if (filProgress) {
+      traversee.fromTo(
+        filProgress,
+        { scaleX: 0 },
+        { scaleX: 1, ease: 'none', transformOrigin: 'left center' },
+        0,
       );
     }
 
-    // Chaque chapitre
-    el.querySelectorAll<HTMLElement>('.chapitre-item').forEach((item) => {
-      const isLeft = item.dataset.side === 'left';
-      const dot = item.querySelector('.chapitre-dot');
-      const card = item.querySelector('.chapitre-card');
-      const branch = item.querySelector('.chapitre-branch');
+    // ── Intro — apparaît à l'approche de la section ──
+    const intro = el.querySelector('.chapitres-intro-content');
+    if (intro) {
+      gsap.from(intro, {
+        opacity: 0, y: 30, filter: 'blur(6px)', ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 75%', end: 'top 20%', scrub: 1 },
+      });
+    }
+
+    // ── Chaque panneau s'anime à son entrée dans le viewport horizontal ──
+    el.querySelectorAll<HTMLElement>('.chapitre-panel').forEach((panel) => {
+      const up = panel.dataset.pos === 'up';
+      const dot = panel.querySelector('.chapitre-dot-inner');
+      const branch = panel.querySelector('.chapitre-branch');
+      const card = panel.querySelector('.chapitre-card');
 
       if (dot) {
         gsap.from(dot, {
           scale: 0, opacity: 0, ease: 'none',
-          scrollTrigger: { trigger: item, start: 'top 78%', end: 'top 60%', scrub: 1 },
+          scrollTrigger: { trigger: panel, containerAnimation: traversee, start: 'left 85%', end: 'left 62%', scrub: 1 },
         });
       }
       if (branch) {
         gsap.from(branch, {
-          scaleX: 0, opacity: 0, ease: 'none',
-          transformOrigin: isLeft ? 'right center' : 'left center',
-          scrollTrigger: { trigger: item, start: 'top 76%', end: 'top 58%', scrub: 1 },
+          scaleY: 0, opacity: 0, ease: 'none',
+          transformOrigin: up ? 'bottom center' : 'top center',
+          scrollTrigger: { trigger: panel, containerAnimation: traversee, start: 'left 82%', end: 'left 58%', scrub: 1 },
         });
       }
       if (card) {
         gsap.from(card, {
-          opacity: 0,
-          x: isLeft ? -40 : 40,
-          filter: 'blur(4px)',
-          ease: 'none',
-          scrollTrigger: { trigger: item, start: 'top 74%', end: 'top 50%', scrub: 1 },
+          opacity: 0, y: up ? -34 : 34, filter: 'blur(4px)', ease: 'none',
+          scrollTrigger: { trigger: panel, containerAnimation: traversee, start: 'left 80%', end: 'left 48%', scrub: 1 },
         });
       }
     });
 
-    // Coeur final
-    const heart = el.querySelector('.fil-heart');
+    // ── Infini final ──
+    const heart = el.querySelector('.fil-heart-inner');
     if (heart) {
       gsap.from(heart, {
         scale: 0, opacity: 0, ease: 'none',
-        scrollTrigger: {
-          trigger: heart,
-          start: 'top 85%',
-          end: 'top 65%',
-          scrub: 1,
-        },
+        scrollTrigger: { trigger: el.querySelector('.chapitre-panel-final'), containerAnimation: traversee, start: 'left 78%', end: 'left 40%', scrub: 1 },
       });
     }
   }, { scope: container });
@@ -171,48 +193,74 @@ export default function ConnexionSection() {
       />
       <div className="absolute inset-0 grain pointer-events-none z-10" />
 
-      {/* Orbes */}
-      <div className="orb orb-mist w-[450px] h-[450px] top-10 -right-32 opacity-40" />
-      <div className="orb orb-gold w-[200px] h-[200px] bottom-40 -left-16 opacity-20" />
-      <div className="orb orb-rose w-[350px] h-[350px] top-[40%] left-1/2 -translate-x-1/2 opacity-10" />
-      <div className="orb orb-mist w-[300px] h-[300px] bottom-10 right-10 opacity-25" />
+      {/* Conteneur pinné : 1 écran, le contenu défile horizontalement */}
+      <div className="chapitres-pin relative h-[100dvh] overflow-hidden">
+        {/* Orbes — dans le pin pour accompagner toute la traversée */}
+        <div className="orb orb-mist w-[450px] h-[450px] top-10 -right-32 opacity-40" />
+        <div className="orb orb-gold w-[200px] h-[200px] bottom-16 -left-16 opacity-20" />
+        <div className="orb orb-rose w-[350px] h-[350px] top-[40%] left-1/2 -translate-x-1/2 opacity-10" />
+        <div className="orb orb-mist w-[300px] h-[300px] bottom-10 right-10 opacity-25" />
 
-      {/* Contenu */}
-      <div className="relative z-20 flex flex-col items-center pt-24 pb-32 px-5">
-        {/* Titre */}
-        <h2 className="chapitres-title font-serif text-4xl md:text-6xl font-light text-charcoal text-center">
-          Nos chapitres
-        </h2>
-        <p className="chapitres-subtitle font-sans text-sm text-charcoal/40 font-light mt-3 mb-20 md:mb-28">
-          Chaque mois a écrit un peu de nous.
-        </p>
-
-        {/* Timeline */}
-        <div className="chapitres-timeline relative w-full max-w-2xl">
-          {/* Fil doré central */}
+        {/* Track horizontal */}
+        <div className="chapitres-track relative flex items-stretch h-full w-max will-change-transform z-20">
+          {/* Fil doré horizontal — fond, puis progression qui se remplit */}
           <div
-            className="fil-dore absolute top-0 bottom-0 w-px left-6 md:left-1/2 md:-translate-x-1/2"
+            className="absolute left-0 right-0 top-1/2 h-px"
+            style={{ background: 'oklch(0.80 0.10 85 / 0.15)' }}
+          />
+          <div
+            className="fil-progress absolute left-0 right-0 top-1/2 h-px"
             style={{
-              background: 'linear-gradient(180deg, oklch(0.80 0.10 85 / 0.5), oklch(0.80 0.10 85 / 0.35), oklch(0.80 0.10 85 / 0.15))',
-              transformOrigin: 'top',
-              boxShadow: '0 0 10px oklch(0.80 0.10 85 / 0.2)',
+              background: 'linear-gradient(90deg, oklch(0.80 0.10 85 / 0.6), oklch(0.80 0.10 85 / 0.35))',
+              boxShadow: '0 0 10px oklch(0.80 0.10 85 / 0.25)',
+              transform: 'scaleX(0)',
             }}
           />
 
-          {/* Chapitres */}
-          <div className="flex flex-col gap-14 md:gap-20">
-            {CHAPITRES.map((ch, i) => (
+          {/* Panneau d'intro */}
+          <div className="relative shrink-0 w-[86vw] md:w-[560px] h-full flex items-center">
+            <div className="chapitres-intro-content relative z-10 flex flex-col px-8 md:px-16">
+              <h2 className="chapitres-title font-serif text-4xl md:text-6xl font-light text-charcoal">
+                Nos chapitres
+              </h2>
+              <p className="chapitres-subtitle font-sans text-sm text-charcoal/40 font-light mt-3">
+                Chaque mois a écrit un peu de nous.
+              </p>
+              <div className="flex items-center gap-3 mt-6 text-charcoal/30">
+                <div className="w-10 h-px bg-gold-soft/40" />
+                <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-light">
+                  continue de faire défiler
+                </span>
+                <span className="animate-drift-x font-sans text-xs text-charcoal/40" aria-hidden="true">
+                  →
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Panneaux chapitres — cartes alternées au-dessus / en-dessous du fil */}
+          {CHAPITRES.map((ch, i) => {
+            const up = ch.side === 'left';
+            return (
               <div
                 key={i}
-                className="chapitre-item relative"
-                data-side={ch.side}
+                data-pos={up ? 'up' : 'down'}
+                className="chapitre-panel relative shrink-0 w-[78vw] sm:w-[420px] md:w-[440px] h-full"
               >
-                {/* Dot doré */}
-                <div
-                  className="chapitre-dot absolute left-6 md:left-1/2 -translate-x-1/2 top-5 z-10"
+                {/* Numéro du mois en filigrane — profondeur éditoriale */}
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-1/2 -translate-x-1/2 font-serif font-light select-none pointer-events-none text-[110px] md:text-[170px] leading-none text-charcoal/[0.05] ${
+                    up ? 'top-[56%]' : 'bottom-[56%]'
+                  }`}
                 >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                {/* Dot doré sur le fil */}
+                <div className="chapitre-dot absolute left-1/2 top-1/2 -ml-1.5 -mt-1.5 z-10">
                   <div
-                    className="w-3 h-3 rounded-full"
+                    className="chapitre-dot-inner w-3 h-3 rounded-full"
                     style={{
                       background: 'oklch(0.80 0.10 85)',
                       boxShadow: '0 0 10px oklch(0.80 0.10 85 / 0.5), 0 0 3px oklch(0.80 0.10 85 / 0.3)',
@@ -220,22 +268,20 @@ export default function ConnexionSection() {
                   />
                 </div>
 
-                {/* Branche horizontale (desktop) */}
+                {/* Branche verticale vers la carte */}
                 <div
-                  className={`chapitre-branch hidden md:block absolute top-[23px] h-px ${
-                    ch.side === 'left'
-                      ? 'right-[50%] w-[40px]'
-                      : 'left-[50%] w-[40px]'
+                  className={`chapitre-branch absolute left-[calc(50%-0.5px)] w-px h-8 md:h-10 ${
+                    up ? 'bottom-[calc(50%+0.75rem)]' : 'top-[calc(50%+0.75rem)]'
                   }`}
-                  style={{ background: 'oklch(0.80 0.10 85 / 0.25)' }}
+                  style={{ background: 'oklch(0.80 0.10 85 / 0.3)' }}
                 />
 
-                {/* Card — mobile: toujours à droite du fil, desktop: alternance */}
+                {/* Carte */}
                 <div
-                  className={`chapitre-card relative ml-14 md:ml-0 ${
-                    ch.side === 'left'
-                      ? 'md:mr-auto md:pr-0 md:w-[calc(50%-55px)] md:text-right'
-                      : 'md:ml-auto md:pl-0 md:w-[calc(50%-55px)] md:ml-[calc(50%+55px)]'
+                  className={`chapitre-card absolute left-[6%] w-[88%] ${
+                    up
+                      ? 'bottom-[calc(50%+3.5rem)] md:bottom-[calc(50%+4rem)]'
+                      : 'top-[calc(50%+3.5rem)] md:top-[calc(50%+4rem)]'
                   }`}
                 >
                   <div className="glass rounded-2xl px-5 py-5 md:px-6 md:py-6">
@@ -254,7 +300,7 @@ export default function ConnexionSection() {
 
                     {/* Séparateur */}
                     <div
-                      className={`w-8 h-px my-3 ${ch.side === 'left' ? 'md:ml-auto' : ''}`}
+                      className="w-8 h-px my-3"
                       style={{ background: 'oklch(0.80 0.10 85 / 0.35)' }}
                     />
 
@@ -265,16 +311,16 @@ export default function ConnexionSection() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
 
           {/* Terminaison — infini doré */}
-          <div className="fil-heart absolute left-6 md:left-1/2 -translate-x-1/2 -bottom-10 z-10">
+          <div className="chapitre-panel-final relative shrink-0 w-[60vw] md:w-[420px] h-full">
             <div
-              className="flex items-center justify-center"
+              className="fil-heart absolute left-1/2 top-1/2 -ml-4 -mt-4 z-10"
               style={{ color: 'oklch(0.80 0.10 85)' }}
             >
-              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="fil-heart-inner w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z" />
               </svg>
             </div>
