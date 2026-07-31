@@ -22,6 +22,7 @@ interface NarrativeLine {
 interface PhotoSphereData {
   src: string;
   alt: string;
+  focus?: string;        // object-position — où est le visage (défaut: 'center 30%')
   size: string;          // Tailwind: 'w-18 h-18 md:w-36 md:h-36'
   top?: string;
   left?: string;
@@ -74,13 +75,13 @@ const VERSES: Verse[] = [
     ],
     photos: [
       // Diagonale de lecture : héro vidéo haut-gauche → vidéo bas-droite
-      { src: '/images/narrative/bulle-01.mp4', alt: 'Toi', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', left: '5%' },
-      { src: '/images/narrative/01d.mp4', alt: 'Moment', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', right: '5%' },
-      { src: '/images/narrative/01a.jpg', alt: 'Sourire', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', right: '7%' },
-      { src: '/images/narrative/02b.jpg', alt: 'Douceur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', left: '7%' },
-      { src: '/images/narrative/03a.jpg', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
-      { src: '/images/narrative/04b.jpg', alt: 'Nous', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', left: '24%' },
-      { src: '/images/narrative/05c.jpg', alt: 'Sourire', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', left: '3%' },
+      { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', alt: 'Toi', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', left: '5%' },
+      { src: '/images/narrative/01d.mp4', focus: 'center 25%', alt: 'Moment', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', right: '5%' },
+      { src: '/images/narrative/01a.jpg', focus: 'center 25%', alt: 'Sourire', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', right: '7%' },
+      { src: '/images/narrative/02b.jpg', focus: 'center 20%', alt: 'Douceur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', left: '7%' },
+      { src: '/images/narrative/03a.jpg', focus: 'center 35%', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
+      { src: '/images/narrative/04b.jpg', focus: 'center 25%', alt: 'Nous', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', left: '24%' },
+      { src: '/images/narrative/05c.jpg', focus: 'center 30%', alt: 'Sourire', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', left: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '20%', right: '30%' },
@@ -107,13 +108,13 @@ const VERSES: Verse[] = [
     ],
     photos: [
       // Miroir du chapitre I — l'orage inverse la diagonale
-      { src: '/images/narrative/bulle-02.mp4', alt: 'Ta douceur', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', right: '5%' },
-      { src: '/images/narrative/06c.mp4', alt: 'Ensemble', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', left: '5%' },
-      { src: '/images/narrative/06a.jpg', alt: 'Câlin', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', left: '7%' },
-      { src: '/images/narrative/09b.jpg', alt: 'Chaleur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', right: '7%' },
-      { src: '/images/narrative/07a.jpg', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
-      { src: '/images/narrative/08a.jpg', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
-      { src: '/images/narrative/10a.jpg', alt: 'Distance', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', right: '3%' },
+      { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', alt: 'Ta douceur', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', right: '5%' },
+      { src: '/images/narrative/06c.mp4', focus: 'center 30%', alt: 'Ensemble', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', left: '5%' },
+      { src: '/images/narrative/06a.jpg', focus: 'center 30%', alt: 'Câlin', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', left: '7%' },
+      { src: '/images/narrative/09b.jpg', focus: 'center 18%', alt: 'Chaleur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', right: '7%' },
+      { src: '/images/narrative/07a.jpg', focus: 'center 20%', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
+      { src: '/images/narrative/08a.jpg', focus: 'center 30%', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
+      { src: '/images/narrative/10a.jpg', focus: 'center 25%', alt: 'Distance', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', right: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', top: '15%', left: '38%' },
@@ -138,13 +139,13 @@ const VERSES: Verse[] = [
     ],
     photos: [
       // Symétrie retrouvée — elle et lui face à face, le reste en écho
-      { src: '/images/narrative/bulle-03.mp4', alt: 'Toi qui racontes', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', left: '4%' },
-      { src: '/images/narrative/12b.jpg', alt: 'Toujours', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
-      { src: '/images/narrative/11a.jpg', alt: 'Don', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', left: '18%' },
-      { src: '/images/narrative/11b.jpg', alt: 'Énergie', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', right: '18%' },
-      { src: '/images/narrative/11c.jpg', alt: 'Ensemble', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', left: '20%' },
-      { src: '/images/narrative/12c.mp4', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', left: '6%' },
-      { src: '/images/narrative/12a.mp4', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', right: '6%' },
+      { src: '/images/narrative/bulle-03.mp4', focus: 'center 22%', alt: 'Toi qui racontes', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', left: '4%' },
+      { src: '/images/narrative/12b.jpg', focus: 'center 25%', alt: 'Toujours', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
+      { src: '/images/narrative/11a.jpg', focus: '40% center', alt: 'Don', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', left: '18%' },
+      { src: '/images/narrative/11b.jpg', focus: '25% center', alt: 'Énergie', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', right: '18%' },
+      { src: '/images/narrative/11c.jpg', focus: '40% center', alt: 'Ensemble', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', left: '20%' },
+      { src: '/images/narrative/12c.mp4', focus: 'center 18%', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', left: '6%' },
+      { src: '/images/narrative/12a.mp4', focus: 'center 18%', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', right: '6%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', variant: 'gold', top: '20%', right: '32%' },
@@ -207,6 +208,7 @@ function PhotoSphere({ data }: { data: PhotoSphereData }) {
           playsInline
           preload="none"
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: data.focus ?? 'center 30%' }}
         />
       ) : (
         <Image
@@ -216,6 +218,7 @@ function PhotoSphere({ data }: { data: PhotoSphereData }) {
           height={176}
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: data.focus ?? 'center 30%' }}
           sizes="176px"
         />
       )}
