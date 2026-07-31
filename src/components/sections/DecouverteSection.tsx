@@ -77,11 +77,11 @@ const VERSES: Verse[] = [
       // Diagonale de lecture : héro vidéo haut-gauche → vidéo bas-droite
       { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', alt: 'Toi', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', left: '5%' },
       { src: '/images/narrative/01d.mp4', focus: 'center 25%', alt: 'Moment', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', right: '5%' },
-      { src: '/images/narrative/01a.jpg', focus: 'center 25%', alt: 'Sourire', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', right: '7%' },
-      { src: '/images/narrative/02b.jpg', focus: 'center 20%', alt: 'Douceur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', left: '7%' },
+      { src: '/images/narrative/01a.jpg', focus: 'center 25%', alt: 'Sourire', size: 'hidden md:block md:w-32 md:h-32', top: '30%', right: '7%' },
+      { src: '/images/narrative/02b.jpg', focus: 'center 20%', alt: 'Douceur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', left: '7%' },
       { src: '/images/narrative/03a.jpg', focus: 'center 35%', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
       { src: '/images/narrative/04b.jpg', focus: 'center 25%', alt: 'Nous', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', left: '24%' },
-      { src: '/images/narrative/05c.jpg', focus: 'center 30%', alt: 'Sourire', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', left: '3%' },
+      { src: '/images/narrative/05c.jpg', focus: 'center 30%', alt: 'Sourire', size: 'hidden md:block md:w-20 md:h-20', top: '46%', left: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '20%', right: '30%' },
@@ -110,11 +110,11 @@ const VERSES: Verse[] = [
       // Miroir du chapitre I — l'orage inverse la diagonale
       { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', alt: 'Ta douceur', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', right: '5%' },
       { src: '/images/narrative/06c.mp4', focus: 'center 30%', alt: 'Ensemble', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', left: '5%' },
-      { src: '/images/narrative/06a.jpg', focus: 'center 30%', alt: 'Câlin', size: 'w-16 h-16 md:w-32 md:h-32', top: '30%', left: '7%' },
-      { src: '/images/narrative/09b.jpg', focus: 'center 18%', alt: 'Chaleur', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '30%', right: '7%' },
+      { src: '/images/narrative/06a.jpg', focus: 'center 30%', alt: 'Câlin', size: 'hidden md:block md:w-32 md:h-32', top: '30%', left: '7%' },
+      { src: '/images/narrative/09b.jpg', focus: 'center 18%', alt: 'Chaleur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', right: '7%' },
       { src: '/images/narrative/07a.jpg', focus: 'center 20%', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
       { src: '/images/narrative/08a.jpg', focus: 'center 30%', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
-      { src: '/images/narrative/10a.jpg', focus: 'center 25%', alt: 'Distance', size: 'w-12 h-12 md:w-20 md:h-20', top: '46%', right: '3%' },
+      { src: '/images/narrative/10a.jpg', focus: 'center 25%', alt: 'Distance', size: 'hidden md:block md:w-20 md:h-20', top: '46%', right: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', top: '15%', left: '38%' },
@@ -139,11 +139,11 @@ const VERSES: Verse[] = [
     ],
     photos: [
       // Symétrie retrouvée — elle et lui face à face, le reste en écho
-      { src: '/images/narrative/bulle-03.mp4', focus: 'center 22%', alt: 'Toi qui racontes', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', left: '4%' },
-      { src: '/images/narrative/12b.jpg', focus: 'center 25%', alt: 'Toujours', size: 'w-20 h-20 md:w-44 md:h-44', top: '26%', right: '4%' },
+      { src: '/images/narrative/bulle-03.mp4', focus: 'center 22%', alt: 'Toi qui racontes', size: 'hidden md:block md:w-44 md:h-44', top: '26%', left: '4%' },
+      { src: '/images/narrative/12b.jpg', focus: 'center 25%', alt: 'Toujours', size: 'hidden md:block md:w-44 md:h-44', top: '26%', right: '4%' },
       { src: '/images/narrative/11a.jpg', focus: '40% center', alt: 'Don', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', left: '18%' },
       { src: '/images/narrative/11b.jpg', focus: '25% center', alt: 'Énergie', size: 'w-14 h-14 md:w-28 md:h-28', top: '7%', right: '18%' },
-      { src: '/images/narrative/11c.jpg', focus: '40% center', alt: 'Ensemble', size: 'w-12 h-12 md:w-24 md:h-24', bottom: '30%', left: '20%' },
+      { src: '/images/narrative/11c.jpg', focus: '40% center', alt: 'Ensemble', size: 'hidden md:block md:w-24 md:h-24', bottom: '30%', left: '20%' },
       { src: '/images/narrative/12c.mp4', focus: 'center 18%', alt: 'Nous', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', left: '6%' },
       { src: '/images/narrative/12a.mp4', focus: 'center 18%', alt: 'Promesse', size: 'w-18 h-18 md:w-36 md:h-36', bottom: '9%', right: '6%' },
     ],
@@ -471,24 +471,42 @@ export default function DecouverteSection() {
             alt=""
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: '22% center' }}
           />
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-black/25" />
         </div>
 
         {/* Orbes derrière le texte */}
         <div className="finale-orb orb orb-rose absolute w-72 h-72 -top-20 right-1/4 opacity-30" />
         <div className="finale-orb orb orb-gold absolute w-48 h-48 bottom-10 -left-12 opacity-25" />
 
-        {/* Texte centré par-dessus */}
+        {/* Texte centré par-dessus — scrim local pour rester lisible sur photo claire */}
         <div className="finale-text relative z-10 min-h-[100dvh] flex flex-col items-center justify-center text-center px-6">
-          <p className="font-serif text-base md:text-lg text-warm-white/65 font-light italic max-w-sm drop-shadow-md">
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[46%] pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse 55% 50% at 50% 50%, oklch(0.22 0.05 320 / 0.55) 0%, oklch(0.22 0.05 320 / 0.30) 55%, transparent 78%)',
+            }}
+          />
+          <p
+            className="relative font-serif text-base md:text-lg text-warm-white/85 font-light italic max-w-sm"
+            style={{ textShadow: '0 2px 14px oklch(0.15 0.04 300 / 0.8)' }}
+          >
             — Fin du parcours —
           </p>
-          <p className="font-script text-4xl md:text-6xl text-warm-white drop-shadow-lg leading-relaxed mt-4">
+          <p
+            className="relative font-script text-4xl md:text-6xl text-warm-white leading-relaxed mt-4"
+            style={{ textShadow: '0 3px 22px oklch(0.15 0.04 300 / 0.85)' }}
+          >
             Eve, je t&apos;aime, encore.
           </p>
-          <div className="w-12 h-px mt-6 bg-warm-white/40" />
-          <p className="font-script text-2xl md:text-3xl text-warm-white/85 mt-4 drop-shadow-md">
+          <div className="relative w-12 h-px mt-6 bg-warm-white/50" />
+          <p
+            className="relative font-script text-2xl md:text-3xl text-warm-white/90 mt-4"
+            style={{ textShadow: '0 2px 16px oklch(0.15 0.04 300 / 0.8)' }}
+          >
             — Asura
           </p>
         </div>
