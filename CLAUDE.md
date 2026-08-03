@@ -34,24 +34,12 @@ Aucun framework de test configuré.
 | ------------- | -------------------------------------------------- |
 | Framework     | Next.js 16 (App Router) + React 19 + TS 5          |
 | Styles        | Tailwind CSS 4 + shadcn/ui (New York, Lucide)      |
-| Animations    | GSAP 3 + @gsap/react + ScrollTrigger               |
+| Animations    | GSAP 3 (+ SplitText, TextPlugin) + @gsap/react + ScrollTrigger |
 | Scroll        | **Lenis** (smooth scroll piloté par le ticker GSAP)|
-| Données       | **Firebase Firestore** (roulette à cadeaux uniquement) |
-| Audio         | Non implémenté (Howler.js envisagé, jamais installé) |
+| Audio         | `<audio>` natif — musique optionnelle (`public/audio/musique.mp3`) |
 | Alias         | `@/*` → `./src/*`                                  |
 
-### Variables d'environnement (`.env.local`, non versionné)
-
-```
-NEXT_PUBLIC_FIREBASE_API_KEY
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-NEXT_PUBLIC_FIREBASE_PROJECT_ID
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-NEXT_PUBLIC_FIREBASE_APP_ID
-```
-
-Sans ces clés, la roulette bascule en mode dégradé (fallback `localStorage`), le reste du site fonctionne normalement.
+Aucune variable d'environnement requise — le site est 100 % front-end statique.
 
 ---
 
@@ -61,7 +49,7 @@ Sans ces clés, la roulette bascule en mode dégradé (fallback `localStorage`),
 src/
 ├── app/
 │   ├── layout.tsx              # Fonts (next/font), metadata "Pour toi", lang="fr"
-│   ├── page.tsx                # Orchestrateur : loading → lock → content + roulette
+│   ├── page.tsx                # Orchestrateur : loading → lock → fete → content + musique
 │   └── globals.css             # Tailwind + thème shadcn + palette + animations custom
 ├── components/
 │   ├── ui/
@@ -76,33 +64,22 @@ src/
 │   │   ├── IntimiteSection.tsx     # Lettre d'amour (tableau LETTRE)
 │   │   ├── ScellementSection.tsx   # Ancrage final (orbes)
 │   │   └── VideoFinaleSection.tsx  # Carrousel de 10 vidéos (6 s chacune)
-│   └── roulette/               # Roulette à cadeaux (overlay flottant, hors scroll)
-│       ├── GiftBubble.tsx      # Bulle flottante d'ouverture
-│       ├── RouletteModal.tsx   # Modal principal (phases idle → spinning → reveal → wish/claimed)
-│       ├── GiftBox.tsx / GiftReveal.tsx / GiftIcons.tsx / Confetti.tsx
-│       └── WishInput.tsx       # Saisie du vœu → lien WhatsApp (⚠ PHONE_NUMBER placeholder)
-├── hooks/
-│   ├── useGiftRoulette.ts      # État roulette (Firestore + fallback offline)
-│   └── useGifts.ts             # ⚠ CODE MORT (wishlist non branchée)
+│   └── shared/
+│       ├── AnniversaireOverlay.tsx  # Fête du jour J : confettis, couronne, cadeau → révélation
+│       └── Confetti.tsx             # Pluie de cœurs et d'éclats (palette du site)
 ├── lib/
-│   ├── firebase.ts             # Init Firebase + export db (Firestore)
-│   ├── gift-roulette.ts        # Logique roulette : claims, poids, cooldowns, WhatsApp
-│   ├── gifts.ts                # ⚠ CODE MORT (CRUD wishlist, jamais importé)
 │   └── utils.ts                # cn() — clsx + tailwind-merge
-└── types/
-    └── gifts.ts                # GiftType, GiftState, RoulettePhase + GIFT_TYPES (8 cadeaux)
 
 public/
 ├── images/
 │   ├── entree/       # 24 photos (EntreeSection)
 │   ├── souvenirs/    # 28 photos (SouvenirsSection)
 │   ├── narrative/    # 43 fichiers jpg + mp4 (DecouverteSection, ConnexionSection)
-│   ├── gifts/        # 8 PNG (un par cadeau de la roulette)
+│   ├── gifts/        # PNG chibi (seul voeu.png est utilisé — cœur du Scellement)
 │   └── cloud.png
-└── videos/           # finale-1.mp4 → finale-10.mp4 (VideoFinaleSection)
+├── audio/            # musique.mp3 (optionnel — musique de fond)
+└── videos/           # finale-1.mp4 → finale-18.mp4 (VideoFinaleSection)
 ```
-
-`lib/gifts.ts` + `hooks/useGifts.ts` sont un reliquat d'une wishlist Firestore jamais branchée (aucun import dans l'app). À supprimer ou brancher, ne pas s'en inspirer.
 
 ---
 
@@ -118,29 +95,37 @@ Phase 'lock' — DateLock (03/08/2025)
   │  reconnaissance douce → "Oui. C'est ce jour-là."
   │  rideau de transition (curtain fade)
   ▼
-Phase 'content' — 7 sections + roulette flottante
+Phase 'fete' — Joyeux anniversaire (confettis, couronne de souvenirs,
+  │  cadeau à ouvrir → révélation de la soirée romantique)
+  │  un toucher après la révélation → rideau
+  ▼
+Phase 'content' — 7 sections
   1. Entrée       → colonnes de photos, immersion
   2. Découverte   → narration poétique, sphères photos
   3. Souvenirs    → rangées défilantes + viewer circulaire
   4. Connexion    → chapitres mois par mois (Août → …)
   5. Intimité     → lettre d'amour
   6. Scellement   → ancrage final
-  7. Vidéo finale → carrousel de 10 vidéos
-  + GiftBubble/RouletteModal en overlay (si pas de cooldown)
+  7. Vidéo finale → carrousel de 18 vidéos + carte de conclusion
 ```
 
 Les sections sont toutes lazy-loaded (`dynamic(..., { ssr: false })`) et ne se montent qu'après déverrouillage. Les trois phases sont gérées par un state `phase` dans `page.tsx`.
 
 ---
 
-## Roulette à cadeaux (Firestore)
+## Fête d'anniversaire & musique
 
-- **8 cadeaux** définis dans `types/gifts.ts` (`GIFT_TYPES`) : dessert, dîner, cinéma, poème, massage, bisou, gâterie, vœu — chacun avec `maxClaims` (null = infini), couleur OKLCh, image `public/images/gifts/`.
-- **Tirage pondéré** : `GIFT_WEIGHTS` dans `lib/gift-roulette.ts` (bisou 28 → vœu 2).
-- **1 spin par semaine**, réinitialisé chaque **lundi 00:00** — état dans Firestore (`app_state/spin_state`) + fallback `localStorage` (`evee_last_spin`).
-- **Claims atomiques** via `runTransaction` sur la collection `gift_states` (un doc par cadeau).
-- **Vœu** : cooldown propre de 7 jours + envoi via lien WhatsApp (`WishInput.tsx` — ⚠ `PHONE_NUMBER = '33600000000'` est un placeholder à remplacer).
-- Firestore indisponible → mode `offline` (localStorage seul), jamais bloquant.
+- **Phase `fete`** (`shared/AnniversaireOverlay.tsx`) entre le verrou et l'accueil :
+  confettis, couronne de souvenirs en photo-sphères, « Un an — Joyeux
+  anniversaire, mon amour », puis un **cadeau à ouvrir** → révélation
+  (« Une soirée romantique, rien que nous deux » + robe + faiseur de soirée)
+  → un toucher ouvre l'accueil.
+- **Musique de fond** : déposer un fichier dans `public/audio/musique.mp3` —
+  détection automatique (HEAD), démarrage au déverrouillage (fondu 3 s,
+  volume 0.35), bouton ♪ fixe en bas à gauche. Sans fichier : rien ne s'affiche.
+- L'ancien système de roulette à cadeaux (Firestore) a été **retiré** le
+  2026-08-03 — `public/images/gifts/` ne sert plus qu'au cœur chibi du
+  Scellement (`voeu.png`).
 
 ---
 
@@ -293,8 +278,8 @@ Définies via `@keyframes` dans `globals.css` et exposées via classes Tailwind 
 | Narration Découverte    | `DecouverteSection.tsx` (lignes + sphères photos)     |
 | Chapitres timeline      | `ConnexionSection.tsx` (tableau `CHAPITRES`)          |
 | Lettre d'amour          | `IntimiteSection.tsx` (tableau `LETTRE`)              |
-| Cadeaux roulette        | `types/gifts.ts` (`GIFT_TYPES`) + poids dans `lib/gift-roulette.ts` |
-| Numéro WhatsApp (vœu)   | `roulette/WishInput.tsx` (`PHONE_NUMBER` — placeholder à remplacer) |
+| Textes de la fête       | `shared/AnniversaireOverlay.tsx` (Un an, révélation, robe…) |
+| Musique                 | `public/audio/musique.mp3` (optionnelle, détection auto)    |
 | Photos                  | `public/images/{entree,souvenirs,narrative,gifts}/`   |
 | Vidéos finale           | `public/videos/finale-*.mp4` (liste dans `VideoFinaleSection.tsx`) |
 | Images préchargées      | `page.tsx` (`PRELOAD_IMAGES` — à synchroniser avec les dossiers) |

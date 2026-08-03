@@ -104,7 +104,7 @@ Le site est composé de **7 sections plein écran**, montées uniquement après 
 | 6     | Scellement   | Ancrage final                   |
 | 7     | Vidéo finale | Carrousel de vidéos souvenirs   |
 
-S'ajoute une **roulette à cadeaux** flottante (bulle + modal), hors du flux de scroll — voir §5.6.
+S'y ajoute une **fête d'anniversaire** entre le verrou et l'accueil — voir §5.6.
 
 ---
 
@@ -166,11 +166,9 @@ Objectif :
 
 * **Scellement** : ancrage final, orbes lumineuses
 * **Vidéo finale** : carrousel de 10 vidéos (6 s chacune)
-* **Roulette à cadeaux** : bulle flottante → modal de tirage
-  * 8 cadeaux pondérés (bisou, gâterie, massage, poème, dîner, dessert, cinéma, vœu)
-  * 1 tirage par semaine, réinitialisé chaque lundi
-  * état partagé via Firestore (fallback localStorage hors ligne)
-  * le vœu s'envoie par lien WhatsApp
+* **Fête d'anniversaire** (jour J) : après le verrou — confettis, couronne
+  de souvenirs, « Un an », puis un cadeau à ouvrir qui révèle la soirée
+  romantique (robe + faiseur de soirée)
 
 Objectif :
 👉 prolonger l'expérience dans le réel, semaine après semaine.
@@ -218,8 +216,7 @@ Les personnages accompagnent, ils ne dominent jamais.
 ## 8. Contraintes techniques
 
 * Mobile-first obligatoire
-* Front-end Next.js — pas de backend applicatif
-* **Exception** : la roulette à cadeaux s'appuie sur **Firebase Firestore** (clés dans `.env.local`), avec fallback localStorage — jamais bloquant pour le reste du site
+* Front-end Next.js — 100 % statique, aucun backend
 * Scroll fluide via **Lenis** (le scroll snap initial a été abandonné)
 * Pas d’accès direct aux sections sans le verrou
 * Code clair, structuré, maintenable

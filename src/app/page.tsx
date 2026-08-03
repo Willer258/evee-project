@@ -2,9 +2,6 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import GiftBubble from '@/components/roulette/GiftBubble';
-import RouletteModal from '@/components/roulette/RouletteModal';
-import { isSpinOnCooldown } from '@/lib/gift-roulette';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -55,8 +52,6 @@ export default function Home() {
   const [phase, setPhase] = useState<'loading' | 'lock' | 'fete' | 'content'>('loading');
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
-  const [isRouletteOpen, setIsRouletteOpen] = useState(false);
-  const [showBubble, setShowBubble] = useState(false);
   const [hasMusic, setHasMusic] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -220,13 +215,6 @@ export default function Home() {
       ease: 'power2.out',
     });
   }, []);
-
-  // ── Check bubble visibility based on cooldown ──
-  useEffect(() => {
-    if (phase === 'content') {
-      setShowBubble(!isSpinOnCooldown());
-    }
-  }, [phase, isRouletteOpen]);
 
   // ── Lenis smooth scroll ──
   useEffect(() => {
@@ -416,9 +404,6 @@ export default function Home() {
             <ScellementSection />
             <VideoFinaleSection />
           </div>
-          {/* Bulle + modal flottantes, hors du scroll */}
-          {showBubble && <GiftBubble onClick={() => setIsRouletteOpen(true)} />}
-          <RouletteModal isOpen={isRouletteOpen} onClose={() => setIsRouletteOpen(false)} />
         </>
       )}
     </>
