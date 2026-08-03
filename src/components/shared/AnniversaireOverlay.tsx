@@ -15,7 +15,7 @@ interface AnniversaireOverlayProps {
 const VIDEOS_BULLES = [
   // 4 grandes — les coins
   { src: '/videos/finale-16.mp4', focus: 'center 30%', size: 'w-24 h-24 md:w-44 md:h-44', top: '4%', left: '6%' },
-  { src: '/videos/fete/fete-05d.mp4', focus: 'center 35%', size: 'w-24 h-24 md:w-44 md:h-44', top: '4%', right: '6%' },
+  { src: '/videos/finale-17.mp4', focus: 'center 30%', size: 'w-24 h-24 md:w-44 md:h-44', top: '4%', right: '6%' },
   { src: '/videos/fete/fete-06c.mp4', focus: 'center 30%', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '8%' },
   { src: '/videos/fete/fete-12c.mp4', focus: 'center 18%', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '5%', right: '7%' },
   // flancs — moyennes
