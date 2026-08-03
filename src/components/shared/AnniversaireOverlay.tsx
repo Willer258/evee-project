@@ -3,107 +3,32 @@
 import { useRef, useState, useCallback } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import Image from 'next/image';
 import Confetti from '@/components/shared/Confetti';
+import Papillons from '@/components/shared/Papillons';
 
 interface AnniversaireOverlayProps {
   onDone: () => void;
 }
 
-interface BulleFete {
-  photos: string[];
-  size: string;
-  top?: string;
-  left?: string;
-  right?: string;
-  bottom?: string;
-  offset: number; // décalage du diaporama, pour désynchroniser les bulles
-}
-
-/* Toute la galerie du site — moins les doublons de remplacement et une écartée */
-const EXCLUES = new Set([
-  '/images/entree/entree-08.jpg',  // doublon de souvenir-23
-  '/images/entree/entree-16.jpg',  // doublon de souvenir-13
-  '/images/entree/entree-19.jpg',  // doublon de souvenir-01
-  '/images/entree/entree-20.jpg',  // doublon de souvenir-24
-  '/images/entree/entree-22.jpg',  // écartée
-]);
-
-const GALERIE: string[] = [
-  ...Array.from({ length: 24 }, (_, i) => `/images/entree/entree-${String(i + 1).padStart(2, '0')}.jpg`),
-  ...Array.from({ length: 29 }, (_, i) => `/images/souvenirs/souvenir-${String(i + 1).padStart(2, '0')}.jpg`),
-].filter((src) => !EXCLUES.has(src));
-
-/* 8 emplacements — les photos de toute la galerie s'y répartissent en alternance */
-const SLOTS = [
-  { size: 'w-24 h-24 md:w-48 md:h-48', top: '5%', left: '7%', offset: 0 },
-  { size: 'w-24 h-24 md:w-48 md:h-48', top: '4%', right: '8%', offset: 1.4 },
-  { size: 'hidden md:block md:w-36 md:h-36', top: '26%', right: '3%', offset: 2.6 },
-  { size: 'w-20 h-20 md:w-40 md:h-40', top: '52%', right: '6%', offset: 0.8 },
-  { size: 'w-20 h-20 md:w-36 md:h-36', bottom: '6%', right: '24%', offset: 3.4 },
-  { size: 'w-24 h-24 md:w-44 md:h-44', bottom: '7%', left: '9%', offset: 2.0 },
-  { size: 'hidden md:block md:w-32 md:h-32', top: '55%', left: '4%', offset: 4.2 },
-  { size: 'w-16 h-16 md:w-32 md:h-32', top: '27%', left: '5%', offset: 1.0 },
-];
-
-const BULLES: BulleFete[] = SLOTS.map((slot, i) => ({
-  ...slot,
-  photos: GALERIE.filter((_, j) => j % SLOTS.length === i),
-}));
-
+/* Couronne 100 % vidéos — toutes les vidéos du projet, en versions légères.
+   Mobile : 6 bulles seulement (Safari limite les lectures simultanées). */
 const VIDEOS_BULLES = [
-  { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', size: 'w-24 h-24 md:w-40 md:h-40', top: '9%', right: '27%' },
-  { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', size: 'w-20 h-20 md:w-32 md:h-32', bottom: '18%', left: '24%' },
+  // 4 grandes — les coins
+  { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', size: 'w-24 h-24 md:w-44 md:h-44', top: '4%', left: '6%' },
+  { src: '/videos/fete/fete-05d.mp4', focus: 'center 35%', size: 'w-24 h-24 md:w-44 md:h-44', top: '4%', right: '6%' },
+  { src: '/videos/fete/fete-06c.mp4', focus: 'center 30%', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '6%', left: '8%' },
+  { src: '/videos/fete/fete-12c.mp4', focus: 'center 18%', size: 'w-24 h-24 md:w-44 md:h-44', bottom: '5%', right: '7%' },
+  // flancs — moyennes
+  { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', size: 'w-20 h-20 md:w-36 md:h-36', top: '33%', left: '3%' },
+  { src: '/images/narrative/01d.mp4', focus: 'center 25%', size: 'w-20 h-20 md:w-36 md:h-36', top: '31%', right: '3%' },
+  // intercalées — desktop uniquement
+  { src: '/images/narrative/03d.mp4', focus: 'center 25%', size: 'hidden md:block md:w-32 md:h-32', top: '8%', left: '29%' },
+  { src: '/images/narrative/bulle-03.mp4', focus: 'center 22%', size: 'hidden md:block md:w-36 md:h-36', top: '10%', right: '27%' },
+  { src: '/videos/fete/fete-04c.mp4', focus: 'center 40%', size: 'hidden md:block md:w-32 md:h-32', bottom: '14%', right: '25%' },
+  { src: '/videos/fete/fete-12a.mp4', focus: 'center 18%', size: 'hidden md:block md:w-32 md:h-32', bottom: '8%', left: '26%' },
+  { src: '/videos/fete/fete-07c.mp4', focus: 'center 30%', size: 'hidden md:block md:w-28 md:h-28', bottom: '27%', left: '6%' },
+  { src: '/images/narrative/09d.mp4', focus: 'center 25%', size: 'hidden md:block md:w-28 md:h-28', top: '56%', right: '8%' },
 ];
-
-/* Une bulle-diaporama : ses photos se succèdent en fondu croisé */
-function BulleSouvenir({ bulle }: { bulle: BulleFete }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    const el = ref.current;
-    if (!el) return;
-    const imgs = el.querySelectorAll('.bulle-img');
-    if (imgs.length < 2) return;
-
-    const cycle = gsap.timeline({ repeat: -1, delay: 2.2 + bulle.offset });
-    imgs.forEach((img, i) => {
-      const next = imgs[(i + 1) % imgs.length];
-      cycle
-        .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' }, `+=3.1`)
-        .to(next, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
-    });
-  }, { scope: ref });
-
-  return (
-    <div
-      ref={ref}
-      className={`fete-sphere photo-sphere photo-sphere-border ${bulle.size}`}
-      style={{
-        ...(bulle.top ? { top: bulle.top } : {}),
-        ...(bulle.bottom ? { bottom: bulle.bottom } : {}),
-        ...(bulle.left ? { left: bulle.left } : {}),
-        ...(bulle.right ? { right: bulle.right } : {}),
-      }}
-    >
-      {bulle.photos.map((src, i) => (
-        <Image
-          key={src}
-          src={src}
-          alt=""
-          width={192}
-          height={192}
-          sizes="192px"
-          className="bulle-img absolute inset-0 w-full h-full object-cover"
-          style={{
-            objectPosition: 'center 28%',
-            opacity: i === 0 ? 1 : 0,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export default function AnniversaireOverlay({ onDone }: AnniversaireOverlayProps) {
   const container = useRef<HTMLDivElement>(null);
@@ -209,10 +134,10 @@ export default function AnniversaireOverlay({ onDone }: AnniversaireOverlayProps
       <Confetti />
       {burst && <Confetti />}
 
-      {/* Couronne de bulles-diaporamas */}
-      {BULLES.map((b, i) => (
-        <BulleSouvenir key={i} bulle={b} />
-      ))}
+      {/* Papillons et pétales — vie ambiante */}
+      <Papillons />
+
+      {/* Couronne de bulles vidéo */}
       {VIDEOS_BULLES.map((v, i) => (
         <div
           key={`v-${i}`}
