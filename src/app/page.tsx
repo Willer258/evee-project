@@ -12,6 +12,7 @@ import Lenis from 'lenis';
 gsap.registerPlugin(ScrollTrigger);
 
 const DateLock = dynamic(() => import('@/components/lock/DateLock'), { ssr: false });
+const AnniversaireOverlay = dynamic(() => import('@/components/shared/AnniversaireOverlay'), { ssr: false });
 const EntreeSection = dynamic(() => import('@/components/sections/EntreeSection'), { ssr: false });
 const DecouverteSection = dynamic(() => import('@/components/sections/DecouverteSection'), { ssr: false });
 const SouvenirsSection = dynamic(() => import('@/components/sections/SouvenirsSection'), { ssr: false });
@@ -51,15 +52,49 @@ function preloadAllImages(onProgress: (pct: number) => void): Promise<void> {
 }
 
 export default function Home() {
-  const [phase, setPhase] = useState<'loading' | 'lock' | 'content'>('loading');
+  const [phase, setPhase] = useState<'loading' | 'lock' | 'fete' | 'content'>('loading');
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [isRouletteOpen, setIsRouletteOpen] = useState(false);
   const [showBubble, setShowBubble] = useState(false);
+  const [hasMusic, setHasMusic] = useState(false);
+  const [musicOn, setMusicOn] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
   const filRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // ── Musique de fond — présente seulement si le fichier existe ──
+  useEffect(() => {
+    fetch('/audio/musique.mp3', { method: 'HEAD' })
+      .then((r) => setHasMusic(r.ok))
+      .catch(() => setHasMusic(false));
+  }, []);
+
+  const startMusique = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0;
+    audio
+      .play()
+      .then(() => {
+        setMusicOn(true);
+        gsap.to(audio, { volume: 0.35, duration: 3, ease: 'none' });
+      })
+      .catch(() => {}); // autoplay refusé → le bouton ♪ reste disponible
+  }, []);
+
+  const toggleMusique = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play().then(() => setMusicOn(true)).catch(() => {});
+    } else {
+      audio.pause();
+      setMusicOn(false);
+    }
+  }, []);
 
   // ── Animations du loader ──
   useEffect(() => {
@@ -143,14 +178,14 @@ export default function Home() {
     });
   }, []);
 
-  // ── Transition lock → content ──
+  // ── Transition lock → fête d'anniversaire ──
   const handleUnlock = useCallback(() => {
+    startMusique();
     const curtain = curtainRef.current;
-    if (!curtain) { setPhase('content'); return; }
+    if (!curtain) { setPhase('fete'); return; }
 
-    // Rideau blanc se ferme puis s'ouvre sur le contenu
     const tl = gsap.timeline({
-      onComplete: () => setPhase('content'),
+      onComplete: () => setPhase('fete'),
     });
 
     tl.fromTo(curtain,
@@ -161,6 +196,27 @@ export default function Home() {
       opacity: 0,
       duration: 0.8,
       delay: 0.2,
+      ease: 'power2.out',
+    });
+  }, [startMusique]);
+
+  // ── Transition fête → contenu ──
+  const handleFeteDone = useCallback(() => {
+    const curtain = curtainRef.current;
+    if (!curtain) { setPhase('content'); return; }
+
+    const tl = gsap.timeline({
+      onComplete: () => setPhase('content'),
+    });
+
+    tl.fromTo(curtain,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.35, ease: 'power2.in' },
+    )
+    .to(curtain, {
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.15,
       ease: 'power2.out',
     });
   }, []);
@@ -300,6 +356,39 @@ export default function Home() {
 
       {/* ── DateLock ── */}
       {phase === 'lock' && <DateLock onUnlock={handleUnlock} />}
+
+      {/* ── Fête d'anniversaire — entre le verrou et l'accueil ── */}
+      {phase === 'fete' && <AnniversaireOverlay onDone={handleFeteDone} />}
+
+      {/* ── Musique de fond (uniquement si public/audio/musique.mp3 existe) ── */}
+      {hasMusic && (
+        <>
+          <audio ref={audioRef} src="/audio/musique.mp3" loop preload="auto" />
+          {(phase === 'fete' || phase === 'content') && (
+            <button
+              type="button"
+              onClick={toggleMusique}
+              aria-label={musicOn ? 'Couper la musique' : 'Lancer la musique'}
+              className="fixed bottom-6 left-6 z-50 w-12 h-12 glass rounded-full flex items-center justify-center text-charcoal/55 hover:text-charcoal/80 active:scale-95 transition-all duration-200"
+            >
+              {musicOn ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                  <line x1="3" y1="3" x2="21" y2="21" />
+                </svg>
+              )}
+            </button>
+          )}
+        </>
+      )}
 
       {/* ── Contenu ── */}
       {phase === 'content' && (
