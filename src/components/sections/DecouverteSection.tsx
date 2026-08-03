@@ -21,6 +21,7 @@ interface NarrativeLine {
 
 interface PhotoSphereData {
   src: string;
+  srcs?: string[];       // pool de la série — la sphère devient un diaporama en fondu
   alt: string;
   focus?: string;        // object-position — où est le visage (défaut: 'center 30%')
   size: string;          // Tailwind: 'w-18 h-18 md:w-36 md:h-36'
@@ -77,11 +78,11 @@ const VERSES: Verse[] = [
       // Diagonale de lecture : héro vidéo haut-gauche → vidéo bas-droite
       { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', alt: 'Toi', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', left: '5%' },
       { src: '/images/narrative/01d.mp4', focus: 'center 25%', alt: 'Moment', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', right: '5%' },
-      { src: '/images/narrative/01a.jpg', focus: 'center 25%', alt: 'Sourire', size: 'hidden md:block md:w-32 md:h-32', top: '30%', right: '7%' },
-      { src: '/images/narrative/02b.jpg', focus: 'center 20%', alt: 'Douceur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', left: '7%' },
-      { src: '/images/narrative/03a.jpg', focus: 'center 35%', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
+      { src: '/images/narrative/01a.jpg', srcs: ['/images/narrative/01a.jpg', '/images/narrative/01b.jpg', '/images/narrative/01c.jpg'], focus: 'center 25%', alt: 'Sourire', size: 'hidden md:block md:w-32 md:h-32', top: '30%', right: '7%' },
+      { src: '/images/narrative/02b.jpg', srcs: ['/images/narrative/02b.jpg', '/images/narrative/02a.jpg', '/images/narrative/02c.jpg'], focus: 'center 20%', alt: 'Douceur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', left: '7%' },
+      { src: '/images/narrative/03a.jpg', srcs: ['/images/narrative/03a.jpg', '/images/narrative/03c.jpg'], focus: 'center 35%', alt: 'Gestes', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', right: '22%' },
       { src: '/images/narrative/04b.jpg', focus: 'center 25%', alt: 'Nous', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', left: '24%' },
-      { src: '/images/narrative/05c.jpg', focus: 'center 30%', alt: 'Sourire', size: 'hidden md:block md:w-20 md:h-20', top: '46%', left: '3%' },
+      { src: '/images/narrative/05c.jpg', srcs: ['/images/narrative/05c.jpg', '/images/narrative/05a.jpg', '/images/narrative/05b.jpg'], focus: 'center 30%', alt: 'Sourire', size: 'hidden md:block md:w-20 md:h-20', top: '46%', left: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-lg', top: '20%', right: '30%' },
@@ -110,11 +111,11 @@ const VERSES: Verse[] = [
       // Miroir du chapitre I — l'orage inverse la diagonale
       { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', alt: 'Ta douceur', size: 'w-24 h-24 md:w-52 md:h-52', top: '9%', right: '5%' },
       { src: '/images/narrative/06c.mp4', focus: 'center 30%', alt: 'Ensemble', size: 'w-20 h-20 md:w-40 md:h-40', bottom: '10%', left: '5%' },
-      { src: '/images/narrative/06a.jpg', focus: 'center 30%', alt: 'Câlin', size: 'hidden md:block md:w-32 md:h-32', top: '30%', left: '7%' },
-      { src: '/images/narrative/09b.jpg', focus: 'center 18%', alt: 'Chaleur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', right: '7%' },
-      { src: '/images/narrative/07a.jpg', focus: 'center 20%', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
-      { src: '/images/narrative/08a.jpg', focus: 'center 30%', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
-      { src: '/images/narrative/10a.jpg', focus: 'center 25%', alt: 'Distance', size: 'hidden md:block md:w-20 md:h-20', top: '46%', right: '3%' },
+      { src: '/images/narrative/06a.jpg', srcs: ['/images/narrative/06a.jpg', '/images/narrative/06b.jpg'], focus: 'center 30%', alt: 'Câlin', size: 'hidden md:block md:w-32 md:h-32', top: '30%', left: '7%' },
+      { src: '/images/narrative/09b.jpg', srcs: ['/images/narrative/09b.jpg', '/images/narrative/09a.jpg', '/images/narrative/09c.jpg'], focus: 'center 18%', alt: 'Chaleur', size: 'hidden md:block md:w-32 md:h-32', bottom: '30%', right: '7%' },
+      { src: '/images/narrative/07a.jpg', srcs: ['/images/narrative/07a.jpg', '/images/narrative/07b.jpg'], focus: 'center 20%', alt: 'Coeur', size: 'w-14 h-14 md:w-24 md:h-24', top: '7%', left: '22%' },
+      { src: '/images/narrative/08a.jpg', srcs: ['/images/narrative/08a.jpg', '/images/narrative/08b.jpg', '/images/narrative/08c.jpg'], focus: 'center 30%', alt: 'Visage', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '7%', right: '24%' },
+      { src: '/images/narrative/10a.jpg', srcs: ['/images/narrative/10a.jpg', '/images/narrative/10b.jpg', '/images/narrative/10c.jpg'], focus: 'center 25%', alt: 'Distance', size: 'hidden md:block md:w-20 md:h-20', top: '46%', right: '3%' },
     ],
     spheres: [
       { size: 'water-sphere-xl', top: '15%', left: '38%' },
@@ -187,10 +188,29 @@ function lineClass(style: LineStyle, isFirst: boolean, accent?: Verse['accent'])
    ────────────────────────────────────────── */
 
 function PhotoSphere({ data }: { data: PhotoSphereData }) {
+  const ref = useRef<HTMLDivElement>(null);
   const isVideo = data.src.endsWith('.mp4');
+  const pool = data.srcs ?? [data.src];
+
+  // Diaporama en fondu croisé — chaque sphère fait tourner sa série de souvenirs
+  useGSAP(() => {
+    const el = ref.current;
+    if (!el) return;
+    const imgs = el.querySelectorAll('.sphere-img');
+    if (imgs.length < 2) return;
+
+    const cycle = gsap.timeline({ repeat: -1, delay: gsap.utils.random(1, 4) });
+    imgs.forEach((img, i) => {
+      const next = imgs[(i + 1) % imgs.length];
+      cycle
+        .to(img, { opacity: 0, duration: 1.3, ease: 'power2.inOut' }, '+=3.4')
+        .to(next, { opacity: 1, duration: 1.3, ease: 'power2.inOut' }, '<');
+    });
+  }, { scope: ref });
 
   return (
     <div
+      ref={ref}
       className={`photo-sphere photo-sphere-border ${data.size}`}
       style={{
         ...(data.top ? { top: data.top } : {}),
@@ -211,16 +231,19 @@ function PhotoSphere({ data }: { data: PhotoSphereData }) {
           style={{ objectPosition: data.focus ?? 'center 30%' }}
         />
       ) : (
-        <Image
-          src={data.src}
-          alt={data.alt}
-          width={176}
-          height={176}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: data.focus ?? 'center 30%' }}
-          sizes="176px"
-        />
+        pool.map((src, i) => (
+          <Image
+            key={src}
+            src={src}
+            alt={data.alt}
+            width={176}
+            height={176}
+            loading="lazy"
+            className="sphere-img absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: data.focus ?? 'center 30%', opacity: i === 0 ? 1 : 0 }}
+            sizes="176px"
+          />
+        ))
       )}
     </div>
   );
@@ -366,12 +389,14 @@ export default function DecouverteSection() {
       });
     });
 
-    // Parallaxe de profondeur — les petites bulles dérivent plus que les grandes
+    // Parallaxe de profondeur + traversée diagonale — les bulles voyagent au fil du scroll
     el.querySelectorAll('.verse').forEach((verse) => {
       verse.querySelectorAll<HTMLElement>('.photo-sphere').forEach((photo) => {
         const depth = gsap.utils.clamp(0.25, 1, 90 / (photo.offsetWidth || 90));
+        const versLInterieur = photo.style.left ? 1 : -1;
         gsap.to(photo, {
           yPercent: -22 * depth,
+          xPercent: versLInterieur * 12 * depth,
           ease: 'none',
           scrollTrigger: {
             trigger: verse,
