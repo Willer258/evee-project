@@ -10,34 +10,100 @@ interface AnniversaireOverlayProps {
   onDone: () => void;
 }
 
-interface SouvenirFete {
-  src: string;
-  focus?: string;
+interface BulleFete {
+  photos: string[];
   size: string;
   top?: string;
   left?: string;
   right?: string;
   bottom?: string;
+  offset: number; // décalage du diaporama, pour désynchroniser les bulles
 }
 
-/* Couronne de souvenirs autour du message — tous préchargés par le loader */
-const PHOTOS: SouvenirFete[] = [
-  { src: '/images/entree/entree-01.jpg', focus: 'center 30%', size: 'w-20 h-20 md:w-32 md:h-32', top: '6%', left: '8%' },
-  { src: '/images/entree/entree-07.jpg', focus: 'center 30%', size: 'w-16 h-16 md:w-28 md:h-28', top: '5%', right: '10%' },
-  { src: '/images/souvenirs/souvenir-03.jpg', focus: 'center 20%', size: 'w-14 h-14 md:w-24 md:h-24', top: '22%', right: '4%' },
-  { src: '/images/entree/entree-12.jpg', focus: 'center 25%', size: 'hidden md:block md:w-28 md:h-28', top: '48%', right: '6%' },
-  { src: '/images/souvenirs/souvenir-23.jpg', focus: 'center 30%', size: 'w-16 h-16 md:w-32 md:h-32', bottom: '14%', right: '9%' },
-  { src: '/images/souvenirs/souvenir-29.jpg', focus: 'center 25%', size: 'w-14 h-14 md:w-24 md:h-24', bottom: '5%', right: '28%' },
-  { src: '/images/souvenirs/souvenir-04.jpg', focus: 'center 20%', size: 'w-20 h-20 md:w-32 md:h-32', bottom: '7%', left: '10%' },
-  { src: '/images/souvenirs/souvenir-13.jpg', focus: 'center 25%', size: 'hidden md:block md:w-24 md:h-24', bottom: '32%', left: '4%' },
-  { src: '/images/entree/entree-04.jpg', focus: 'center 25%', size: 'w-14 h-14 md:w-24 md:h-24', top: '30%', left: '5%' },
-  { src: '/images/entree/entree-24.jpg', focus: 'center 25%', size: 'hidden md:block md:w-20 md:h-20', top: '12%', left: '30%' },
+/* Toute la galerie du site — moins les doublons de remplacement et une écartée */
+const EXCLUES = new Set([
+  '/images/entree/entree-08.jpg',  // doublon de souvenir-23
+  '/images/entree/entree-16.jpg',  // doublon de souvenir-13
+  '/images/entree/entree-19.jpg',  // doublon de souvenir-01
+  '/images/entree/entree-20.jpg',  // doublon de souvenir-24
+  '/images/entree/entree-22.jpg',  // écartée
+]);
+
+const GALERIE: string[] = [
+  ...Array.from({ length: 24 }, (_, i) => `/images/entree/entree-${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 29 }, (_, i) => `/images/souvenirs/souvenir-${String(i + 1).padStart(2, '0')}.jpg`),
+].filter((src) => !EXCLUES.has(src));
+
+/* 8 emplacements — les photos de toute la galerie s'y répartissent en alternance */
+const SLOTS = [
+  { size: 'w-24 h-24 md:w-48 md:h-48', top: '5%', left: '7%', offset: 0 },
+  { size: 'w-24 h-24 md:w-48 md:h-48', top: '4%', right: '8%', offset: 1.4 },
+  { size: 'hidden md:block md:w-36 md:h-36', top: '26%', right: '3%', offset: 2.6 },
+  { size: 'w-20 h-20 md:w-40 md:h-40', top: '52%', right: '6%', offset: 0.8 },
+  { size: 'w-20 h-20 md:w-36 md:h-36', bottom: '6%', right: '24%', offset: 3.4 },
+  { size: 'w-24 h-24 md:w-44 md:h-44', bottom: '7%', left: '9%', offset: 2.0 },
+  { size: 'hidden md:block md:w-32 md:h-32', top: '55%', left: '4%', offset: 4.2 },
+  { size: 'w-16 h-16 md:w-32 md:h-32', top: '27%', left: '5%', offset: 1.0 },
 ];
 
-const VIDEOS: SouvenirFete[] = [
-  { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', size: 'w-20 h-20 md:w-36 md:h-36', top: '10%', right: '27%' },
-  { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', size: 'w-16 h-16 md:w-28 md:h-28', bottom: '20%', left: '22%' },
+const BULLES: BulleFete[] = SLOTS.map((slot, i) => ({
+  ...slot,
+  photos: GALERIE.filter((_, j) => j % SLOTS.length === i),
+}));
+
+const VIDEOS_BULLES = [
+  { src: '/images/narrative/bulle-01.mp4', focus: 'center 25%', size: 'w-24 h-24 md:w-40 md:h-40', top: '9%', right: '27%' },
+  { src: '/images/narrative/bulle-02.mp4', focus: 'center 25%', size: 'w-20 h-20 md:w-32 md:h-32', bottom: '18%', left: '24%' },
 ];
+
+/* Une bulle-diaporama : ses photos se succèdent en fondu croisé */
+function BulleSouvenir({ bulle }: { bulle: BulleFete }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const el = ref.current;
+    if (!el) return;
+    const imgs = el.querySelectorAll('.bulle-img');
+    if (imgs.length < 2) return;
+
+    const cycle = gsap.timeline({ repeat: -1, delay: 2.2 + bulle.offset });
+    imgs.forEach((img, i) => {
+      const next = imgs[(i + 1) % imgs.length];
+      cycle
+        .to(img, { opacity: 0, duration: 1.2, ease: 'power2.inOut' }, `+=3.1`)
+        .to(next, { opacity: 1, duration: 1.2, ease: 'power2.inOut' }, '<');
+    });
+  }, { scope: ref });
+
+  return (
+    <div
+      ref={ref}
+      className={`fete-sphere photo-sphere photo-sphere-border ${bulle.size}`}
+      style={{
+        ...(bulle.top ? { top: bulle.top } : {}),
+        ...(bulle.bottom ? { bottom: bulle.bottom } : {}),
+        ...(bulle.left ? { left: bulle.left } : {}),
+        ...(bulle.right ? { right: bulle.right } : {}),
+      }}
+    >
+      {bulle.photos.map((src, i) => (
+        <Image
+          key={src}
+          src={src}
+          alt=""
+          width={192}
+          height={192}
+          sizes="192px"
+          className="bulle-img absolute inset-0 w-full h-full object-cover"
+          style={{
+            objectPosition: 'center 28%',
+            opacity: i === 0 ? 1 : 0,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function AnniversaireOverlay({ onDone }: AnniversaireOverlayProps) {
   const container = useRef<HTMLDivElement>(null);
@@ -79,15 +145,25 @@ export default function AnniversaireOverlay({ onDone }: AnniversaireOverlayProps
         scale: 0, opacity: 0, duration: 0.8, ease: 'back.out(1.7)',
       }, '+=0.4');
 
-    // Flottement doux des souvenirs
+    // Chorégraphie des bulles : dérives elliptiques désynchronisées + respiration
     el.querySelectorAll('.fete-sphere').forEach((s, i) => {
       gsap.to(s, {
-        y: `+=${gsap.utils.random(-8, 8)}`,
-        duration: gsap.utils.random(2.5, 4),
-        yoyo: true,
-        repeat: -1,
-        ease: 'sine.inOut',
-        delay: 1.5 + i * 0.05,
+        x: `+=${gsap.utils.random(-16, 16)}`,
+        duration: gsap.utils.random(4, 6),
+        yoyo: true, repeat: -1, ease: 'sine.inOut',
+        delay: 1.2 + i * 0.05,
+      });
+      gsap.to(s, {
+        y: `+=${gsap.utils.random(-18, 18)}`,
+        duration: gsap.utils.random(5, 7.5),
+        yoyo: true, repeat: -1, ease: 'sine.inOut',
+        delay: 1.2 + i * 0.07,
+      });
+      gsap.to(s, {
+        scale: 1.035,
+        duration: gsap.utils.random(3, 4.5),
+        yoyo: true, repeat: -1, ease: 'sine.inOut',
+        delay: 1.6 + i * 0.1,
       });
     });
   }, { scope: container });
@@ -133,30 +209,11 @@ export default function AnniversaireOverlay({ onDone }: AnniversaireOverlayProps
       <Confetti />
       {burst && <Confetti />}
 
-      {/* Couronne de souvenirs */}
-      {PHOTOS.map((p, i) => (
-        <div
-          key={`p-${i}`}
-          className={`fete-sphere photo-sphere photo-sphere-border ${p.size}`}
-          style={{
-            ...(p.top ? { top: p.top } : {}),
-            ...(p.bottom ? { bottom: p.bottom } : {}),
-            ...(p.left ? { left: p.left } : {}),
-            ...(p.right ? { right: p.right } : {}),
-          }}
-        >
-          <Image
-            src={p.src}
-            alt=""
-            width={128}
-            height={128}
-            sizes="128px"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: p.focus ?? 'center 30%' }}
-          />
-        </div>
+      {/* Couronne de bulles-diaporamas */}
+      {BULLES.map((b, i) => (
+        <BulleSouvenir key={i} bulle={b} />
       ))}
-      {VIDEOS.map((v, i) => (
+      {VIDEOS_BULLES.map((v, i) => (
         <div
           key={`v-${i}`}
           className={`fete-sphere photo-sphere photo-sphere-border ${v.size}`}
